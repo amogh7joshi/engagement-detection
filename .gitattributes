@@ -1,0 +1,8 @@
+# Python Files
+*.py        text diff=python
+# Binary files.
+*.pickle filter=lfs diff=lfs merge=lfs -text
+# Jupyter Notebook
+*.ipynb     text
+# Model Weights
+*.hdf5 filter=lfs diff=lfs merge=lfs -text

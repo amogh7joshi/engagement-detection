@@ -1,0 +1,13 @@
+venv/
+.DS_Store
+.idea/
+__pycache__/
+**/__pycache__/
+
+# My Personal Files
+fer/model.py
+# The csv is too large to include in the repository.
+fer/fer2013.csv
+# The cascade classifier is too large to include in the repository
+fer/classifier/haarcascade_frontalface_default.xml
+**test*.py
