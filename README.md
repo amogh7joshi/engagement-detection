@@ -40,7 +40,7 @@ For more information, visit the `data` subdirectory.
 The `info.json` file contains the relevant locations of the cascade classifiers and DNN model files.
 You can replace the current locations with those on your computer. 
 
-## Pipelines
+## Data Pipelines
 
 The directories in this repository are integrated for a seamless transition sequence. All necessary data
 including model architecture, weights, cascade classifiers, and other necessary files will be saved to necessary 
