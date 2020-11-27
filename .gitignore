@@ -12,6 +12,7 @@ data/dataset/fer2013.csv
 !testmodel.py
 fer/
 fer
+test_imgs/
 modded/
 imageruntest/
 data/dataset/*

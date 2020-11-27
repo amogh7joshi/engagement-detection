@@ -20,7 +20,7 @@ maxf=""
 for file in *; do
   f="${file:11:4}"
   # shellcheck disable=SC2073
-  if [ $f > $max ]; then
+  if [ $f -gt $max ]; then
     max=$f
     # shellcheck disable=SC2034
     maxf=$file
@@ -32,17 +32,23 @@ done
 rm 0
 for dest in "${arr[@]}"; do
   # shellcheck disable=SC2216
-  rm $dest | :
+  if [ -f $dest ]; then
+    rm $dest
+  fi
 done
 
 # Move the best model to the savemodel directory.
 cp $maxf ../savedmodels/
+echo $max
 
 # If user permits, delete the other models.
 echo "Would you like to delete the other trained models from this attempt? [y/n]"
 read input
 if [ $input = "y" ]; then
   rm *
+  exit
+else
+  exit
 fi
 
 

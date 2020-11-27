@@ -9,13 +9,13 @@ import numpy as np
 
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model, Sequential
-from tensorflow.keras.layers import Conv2D, SeparableConv2D, MaxPooling2D, BatchNormalization, GlobalAvgPool2D
-from tensorflow.keras.layers import ReLU, Softmax, Input, Dense, Dropout, Flatten
+from tensorflow.keras.layers import Conv2D, ZeroPadding2D, MaxPooling2D, BatchNormalization, GlobalAvgPool2D, Conv2D
+from tensorflow.keras.layers import ReLU, ELU, Softmax, Input, Dense, Dropout, Flatten, Activation
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from data.load_data import get_data
 
@@ -54,10 +54,10 @@ def create_model(input, classes, l2_reg = 0.01):
    res = Conv2D(8, kernel_size = (1, 1), strides = (2, 2), kernel_regularizer = reg, use_bias = False)(model)
    res = BatchNormalization()(res)
 
-   model = SeparableConv2D(8, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(8, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = ReLU()(model)
-   model = SeparableConv2D(8, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(8, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
    model = layers.add([model, res])
@@ -65,10 +65,10 @@ def create_model(input, classes, l2_reg = 0.01):
    res = Conv2D(16, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
    res = BatchNormalization()(res)
 
-   model = SeparableConv2D(16, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(16, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = ReLU()(model)
-   model = SeparableConv2D(16, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(16, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
    model = layers.add([model, res])
@@ -76,10 +76,10 @@ def create_model(input, classes, l2_reg = 0.01):
    res = Conv2D(32, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
    res = BatchNormalization()(res)
 
-   model = SeparableConv2D(32, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(32, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = ReLU()(model)
-   model = SeparableConv2D(32, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(32, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
    model = layers.add([model, res])
@@ -87,10 +87,10 @@ def create_model(input, classes, l2_reg = 0.01):
    res = Conv2D(64, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
    res = BatchNormalization()(res)
 
-   model = SeparableConv2D(64, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(64, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = ReLU()(model)
-   model = SeparableConv2D(64, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(64, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
    model = layers.add([model, res])
@@ -104,17 +104,6 @@ def create_model(input, classes, l2_reg = 0.01):
    return model
 
 model = create_model((48, 48, 1), 7)
-"""model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48, 48, 1)))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-model.add(Flatten())
-model.add(Dense(256, activation='relu'))
-model.add(Dense(7, activation='softmax'))"""
-
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
               metrics = ['accuracy'])
@@ -133,7 +122,7 @@ callbacks = [checkpoint, early_stop, reduce_lr]
 model.fit_generator(
    train_flow,
    steps_per_epoch = (len(X_train) / 32),
-   epochs = args['epochs'],
+   epochs = 20, # args['epochs'],
    verbose = 1,
    callbacks = callbacks,
    validation_data = validation_flow
