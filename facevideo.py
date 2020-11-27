@@ -13,6 +13,26 @@ import mtcnn
 import numpy as np
 import matplotlib.pyplot as plt
 
+from util.imageops import resize, grayscale
+from util.constant import classes
+
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras.losses import categorical_crossentropy
+from tensorflow.keras.optimizers import Adam
+
+from data.load_data import get_data
+from util.imageops import resize, grayscale
+
+X_train, X_validation, X_test, y_train, y_validation, y_test = get_data()
+
+datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
+model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())
+model.load_weights(os.path.join(datadir, "Model-20-0.5768.hdf5"))
+
+model.compile(optimizer = Adam(),
+              loss = categorical_crossentropy,
+              metrics = ['accuracy'])
+
 # A program that detects faces from a continuous video feed.
 # If running the program from the command line, you can choose the detector using the -m flag.
 # Otherwise, if running in an IDE, set the below "runchoice" variable to whatever choice you want.
@@ -26,7 +46,7 @@ ap.add_argument("-s", "--save", action = 'store_true',
 args = vars(ap.parse_args())
 
 runchoice = ""
-detector = runchoice.lower() if runchoice.lower() in ["MTCNN", "DNN", "Cascade"] else args["model"]
+detector = runchoice.lower() if runchoice.lower() in ["mtcnn", "dnn", "cascade", "fer"] else args["model"]
 
 CENTER_X = 100
 CENTER_Y = 80
@@ -44,7 +64,6 @@ cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/pytho
 cascade_eye = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml')
 det = mtcnn.MTCNN()
 datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
-print(datadir)
 net = cv2.dnn.readNetFromCaffe(os.path.join(datadir, "model.prototxt"),
                                os.path.join(datadir, "res10_300x300_ssd_iter_140000_fp16.caffemodel"))
 
@@ -81,7 +100,9 @@ while True:
          box = faces[0, 0, i, 3:7] * np.array([w, h, w, h])
          (x, y, xe, ye) = box.astype("int")
          cv2.rectangle(frame, (x, y), (xe, ye), (0, 255, 255), 2)
-      showPositionedWindow('frame', frame, CENTER_POS)
+         img = grayscale(resize(frame[x:xe, y:ye]))
+         img = np.expand_dims(img, axis=0)
+         print(classes[np.argmax(model.predict(img))])
 
    if detector.lower() == "cascade": # Cascade Detection
       faces = cascade_face.detectMultiScale(gray_frame, scaleFactor = 1.2, minNeighbors = 5)
@@ -96,6 +117,10 @@ while True:
          for (x1, y1, w1, h1) in eyes:
             # cv2.rectangle(color_reg, (x1, y1), (x1 + w1, y1 + h1), (0, 0, 255), 2)
             pass
+
+   if detector.lower() == "fer": # Emotion Recognition
+      pass
+
    showPositionedWindow('frame', frame, CENTER_POS)
    # To save images from the video feed.
    if args['save']:

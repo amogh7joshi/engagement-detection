@@ -39,15 +39,15 @@ if REDUCE:
    y_validation = y_validation[:REDUCE]
    y_test = y_test[:REDUCE]
 
-def create_model(input, classes, l2_reg = 0.01):
+def create_model(input, classes, l2_reg = 0.005):
    reg = l2(l2_reg)
 
    # Model
    img_input = Input(input)
-   model = Conv2D(5, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, use_bias = False)(img_input)
+   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, use_bias = False)(img_input)
    model = BatchNormalization()(model)
    model = ReLU()(model)
-   model = Conv2D(5, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, use_bias = False)(model)
+   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, use_bias = False)(model)
    model = BatchNormalization()(model)
    model = ReLU()(model)
 
