@@ -19,6 +19,14 @@ You can directly clone this repository from the command line:
 
 ```shell script
 git clone https://github.com/amogh7joshi/fer.git
+```
+
+Enter the directory and install system requirements:
+```shell script
+# Enter Directory
+cd fer
+
+# Install System Requirements
 python3 -m pip install -r requirements.txt
 ```
 
@@ -31,3 +39,10 @@ For more information, visit the `data` subdirectory.
 
 The `info.json` file contains the relevant locations of the cascade classifiers and DNN model files.
 You can replace the current locations with those on your computer. 
+
+## Pipelines
+
+The directories in this repository are integrated for a seamless transition sequence. All necessary data
+including model architecture, weights, cascade classifiers, and other necessary files will be saved to necessary 
+subdirectories in the `data` directory. *Please visit the `data` directory for usage instructions.*
+
