@@ -3,11 +3,9 @@
 import os
 import sys
 import subprocess
+import argparse
 
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model, Sequential
@@ -21,11 +19,18 @@ from keras.preprocessing.image import ImageDataGenerator
 
 from data.load_data import get_data
 
+ap = argparse.ArgumentParser()
+ap.add_argument("-e", "--epochs", default = 10,
+                help = "The number of epochs the model will train for.")
+ap.add_argument("-r", "--reduction", default = False,
+                help = "The size to which the training/validation/test sets should be reduced to. Otherwise False.")
+args = vars(ap.parse_args())
+
 datadir = os.path.join(os.path.dirname(__file__), "data")
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_data()
 
 # Use a smaller dataset of images. Note, this may result in callback issues.
-REDUCE = False # Specify the reduction. Otherwise, this should be false.
+REDUCE = args['reduction'] # Specify the numerical reduction. Otherwise, this should be false.
 if REDUCE:
    X_train = X_train[:REDUCE]
    X_validation = X_validation[:REDUCE]
@@ -128,7 +133,7 @@ callbacks = [checkpoint, early_stop, reduce_lr]
 model.fit_generator(
    train_flow,
    steps_per_epoch = (len(X_train) / 32),
-   epochs = 10,
+   epochs = args['epochs'],
    verbose = 1,
    callbacks = callbacks,
    validation_data = validation_flow
@@ -156,14 +161,13 @@ for file in os.listdir(os.path.join(datadir, "savedmodels")):
 if new - saved:
    base = os.path.basename(next(iter(new - saved)))
    file = os.path.splitext(base)[0]
-   acc = file[-4:]; epoch = file[-9:-7]
-   with open(os.path.join(os.path.dirname(__file__), "data", "savedmodels", f"model-{epoch}-{acc}.json"), "w") as file:
+   acc = file[-6:]; epoch = file[-9:-7]
+   with open(os.path.join(os.path.dirname(__file__), "data", "savedmodels", f"Model-{epoch}-{acc}.json"), "w") as file:
       file.write(model_json)
 else:
    print("No new saved model detected. Saving model architecture as generic \"model-x-x.json\".")
    with open(os.path.join(os.path.dirname(__file__), "data", "savedmodels", "model-x-x.json"), "w") as file:
       file.write(model_json)
-
 
 loss, accuracy = model.evaluate(X_test, y_test)
 print(f"Accuracy: {accuracy}")
