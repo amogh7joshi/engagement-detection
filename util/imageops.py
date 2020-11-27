@@ -9,7 +9,8 @@ def resize(img, target_shape = (48, 48)):
    '''
    Resizes an inputted 2-dimensional image, target shape is default for fer2013.
    '''
-   return cv2.resize(img, dsize = target_shape, interpolation = cv2.INTER_CUBIC)
+   img = cv2.resize(img, dsize = target_shape, interpolation = cv2.INTER_CUBIC)
+   return np.expand_dims(img, axis = 0)
 
 def grayscale(img):
    '''
