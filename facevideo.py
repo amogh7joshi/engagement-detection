@@ -21,6 +21,8 @@ import matplotlib.pyplot as plt
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", default = "DNN",
                 help = "The type of model to be used. (MTCNN, DNN, or Cascade).")
+ap.add_argument("-s", "--save", action = 'store_true',
+                help = "Save images from the video feed to a directory.")
 args = vars(ap.parse_args())
 
 runchoice = ""
@@ -67,6 +69,7 @@ while True:
                           (boundingbox[0] + boundingbox[2], boundingbox[1] + boundingbox[3]),
                           (0, 255, 255), 2)
       showPositionedWindow('frame', frame, CENTER_POS)
+
    if detector.lower() == "dnn": # DNN Detection
       (h, w) = frame.shape[:2]
       blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300),swapRB = False, crop = False)
@@ -79,6 +82,7 @@ while True:
          (x, y, xe, ye) = box.astype("int")
          cv2.rectangle(frame, (x, y), (xe, ye), (0, 255, 255), 2)
       showPositionedWindow('frame', frame, CENTER_POS)
+
    if detector.lower() == "cascade": # Cascade Detection
       faces = cascade_face.detectMultiScale(gray_frame, scaleFactor = 1.2, minNeighbors = 5)
       for (x, y, w, h) in faces:
@@ -88,14 +92,15 @@ while True:
          gray_reg = gray_frame[y:y+h, x:x+w]
          color_reg = frame[y:y+h, x:x+w]
          eyes = cascade_eye.detectMultiScale(gray_reg, scaleFactor = 1.2)
-         # Uncomment below if you want to try to detect eyes, but it doesn't work quite well yet.
+         # Uncomment below if you want to try to detect eyes, but it doesn't work quite well.
          for (x1, y1, w1, h1) in eyes:
             # cv2.rectangle(color_reg, (x1, y1), (x1 + w1, y1 + h1), (0, 0, 255), 2)
             pass
    showPositionedWindow('frame', frame, CENTER_POS)
-   # If you want to save images from the program run, then uncomment the following 2 lines.
-   # if i % 5 == 0 and i != 0:
-   #     cv2.imwrite('imageruntest/testimg' + str(i) + '.jpg', frame)
+   # To save images from the video feed.
+   if args['save']:
+      if i % 5 == 0 and i != 0:
+         cv2.imwrite('imageruntest/testimg' + str(i) + '.jpg', frame)
    if cv2.waitKey(1) & 0xFF == ord('z'):
      break
    i += 1
