@@ -46,3 +46,7 @@ The directories in this repository are integrated for a seamless transition sequ
 including model architecture, weights, cascade classifiers, and other necessary files will be saved to necessary 
 subdirectories in the `data` directory. *Please visit the `data` directory for usage instructions.*
 
+## License and Contributions
+
+The code in this repository is available under the [MIT License](https://github.com/amogh7joshi/fer/blob/master/LICENSE). Although you are welcome to download the 
+repository and work with it, unfortunately no contributions will be accepted. 
