@@ -19,6 +19,7 @@ You can directly clone this repository from the command line:
 
 ```shell script
 git clone https://github.com/amogh7joshi/fer.git
+python3 -m pip install -r requirements.txt
 ```
 
 Then, use the scripts provided in the `scripts` directory to install the necessary data:
@@ -27,3 +28,6 @@ Then, use the scripts provided in the `scripts` directory to install the necessa
 and run the `preprocess.sh` script. 
 
 For more information, visit the `data` subdirectory.
+
+The `info.json` file contains the relevant locations of the cascade classifiers and DNN model files.
+You can replace the current locations with those on your computer. 

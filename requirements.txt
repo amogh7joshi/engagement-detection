@@ -1,0 +1,8 @@
+numpy
+pandas
+matplotlib
+opencv-python
+imutils
+tensorflow
+mtcnn
+
