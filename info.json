@@ -1,0 +1,5 @@
+{
+  "Face Cascade": "/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml",
+  "Eye Cascade": "/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml",
+  "DNN Model": ""
+}

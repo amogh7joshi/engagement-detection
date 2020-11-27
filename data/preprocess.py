@@ -15,10 +15,10 @@ from IPython.display import display
 from keras.utils import np_utils
 
 global data
-try: data = pd.read_csv("./fer2013.csv")
+try: data = pd.read_csv("dataset/fer2013.csv")
 except: raise FileNotFoundError("The file fer2013.csv does not exist.")
 
-datadir = os.path.join(os.getcwd(), "data")
+datadir = os.path.join(os.path.dirname(__file__), "dataset")
 emotions = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
 CLASSES = len(emotions)
 
@@ -42,9 +42,9 @@ def save_sets(train_set, validation_set, test_set):
    d = 1; h = w = int(np.sqrt(len(data.pixels[0].split())))
 
    # Map and preprocess image datasets.
-   X_train = np.array(list(map(str.split, train_set.pixels)))
-   X_validation = np.array(list(map(str.split, validation_set.pixels)))
-   X_test = np.array(list(map(str.split, test_set.pixels)))
+   X_train = np.array(list(map(str.split, train_set.pixels))).astype(np.float)
+   X_validation = np.array(list(map(str.split, validation_set.pixels))).astype(np.float)
+   X_test = np.array(list(map(str.split, test_set.pixels))).astype(np.float)
 
    X_train = X_train.reshape(X_train.shape[0], w, h, d)
    X_validation = X_validation.reshape(X_validation.shape[0], w, h, d)
