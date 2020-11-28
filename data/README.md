@@ -23,3 +23,6 @@ the trained model weights will end up in this directory, and the json file conta
 run and select the best model out of a training session to place into this directory, where it and previous 
 saved models can be called for testing and usage. 
 
+The `.gitignore` files contained in each subdirectory are placeholder files. Once the repository is downloaded, you can remove them,
+but do not rename or remove any of the subdirectories themselves.
+

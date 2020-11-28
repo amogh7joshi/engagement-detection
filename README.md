@@ -58,7 +58,7 @@ If you want to save images, set the `-s` flag to `True`, and they will save to a
 More information is included at the top of the file. An implementation of the emotion detection model into this script
 is currently in progress. 
 
-## Neural Network information
+## Neural Network Information
 
 The model architecture I am currently using for the convolutional neural network is similar to that of VGG16 and VGG19 
 [\[1\]](http://arxiv.org/abs/1409.1556). 
