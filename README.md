@@ -40,6 +40,24 @@ For more information, visit the `data` subdirectory.
 The `info.json` file contains the relevant locations of the cascade classifiers and DNN model files.
 You can replace the current locations with those on your computer. 
 
+## Usage
+
+**Model Training**: Run the `trainmodel.py` script. You can edit the number of epochs in the argparse argument
+at the top of the file. Alternatively, you can run itt from the command line using the flags as mentioned by the 
+argparse arguments. Model weights will be saved to the `data/model` directory, and at the completion of the training,
+the best model will be moved into the `data/savedmodels` directory. The json file containing the model
+architecture will also be saved there. You can control what models to keep in the `data/savedmodels` directory manually.
+
+**Model Testing**: Run the `testmodel.py` script. You can edit which model weights and architecture you want to use at the 
+location at the top of the file. From there, you can run `model.evaluate` on the pre-loaded training and testing data, 
+you can run `model.predict` on any custom images you want to test, or run any other operations with the model. 
+A confusion matrix is also present, which will display if `plt.show()` is uncommented.
+
+**Face Detection**: Run the `facevideo.py` script. You can choose which detector you want to use, as described at the top of the file. 
+If you want to save images, set the `-s` flag to `True`, and they will save to a custom directory at the top-level. 
+More information is included at the top of the file. An implementation of the emotion detection model into this script
+is currently in progress. 
+
 ## Data Pipelines
 
 The directories in this repository are integrated for a seamless transition sequence. All necessary data
