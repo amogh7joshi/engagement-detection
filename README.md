@@ -58,6 +58,14 @@ If you want to save images, set the `-s` flag to `True`, and they will save to a
 More information is included at the top of the file. An implementation of the emotion detection model into this script
 is currently in progress. 
 
+## Neural Network information
+
+The model architecture I am currently using for the convolutional neural network is similar to that of VGG16 and VGG19 
+[\[1\]](http://arxiv.org/abs/1409.1556). 
+
+Since the model has a convolutional architecture, I replaced the fully-connected layers with a global average pooling layer. 
+In general, it yields better results.
+
 ## Data Pipelines
 
 The directories in this repository are integrated for a seamless transition sequence. All necessary data
@@ -68,3 +76,7 @@ subdirectories in the `data` directory. *Please visit the `data` directory for u
 
 The code in this repository is available under the [MIT License](https://github.com/amogh7joshi/fer/blob/master/LICENSE). Although you are welcome to download the 
 repository and work with it, unfortunately no contributions will be accepted. 
+
+## References
+
+[1]: Simonyan, K., and Zisserman, A. (2015). Very deep convolutional networks for large-scale image recognition. ArXiv:1409.1556 [Cs]. http://arxiv.org/abs/1409.1556
