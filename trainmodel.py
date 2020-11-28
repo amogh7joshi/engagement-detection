@@ -9,11 +9,12 @@ import numpy as np
 
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model, Sequential
-from tensorflow.keras.layers import Conv2D, ZeroPadding2D, MaxPooling2D, BatchNormalization, GlobalAvgPool2D, Conv2D
-from tensorflow.keras.layers import ReLU, ELU, Softmax, Input, Dense, Dropout, Flatten, Activation
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, BatchNormalization, GlobalAvgPool2D, SeparableConv2D
+from tensorflow.keras.layers import ReLU, LeakyReLU, Softmax, Input, Dense, Dropout, Flatten, Activation
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.regularizers import l2
+from tensorflow.keras.initializers import RandomNormal
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
@@ -128,7 +129,7 @@ model.fit_generator(
    validation_data = validation_flow
 )
 
-# Save Model Weights & Determine Best Model
+# Save Model Architecture & Determine Best Model
 model_json = model.to_json()
 scriptdir = os.path.join(os.path.dirname(__file__), "scripts")
 datadir = os.path.join(os.path.dirname(__file__), "data")

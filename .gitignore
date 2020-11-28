@@ -6,7 +6,6 @@ __pycache__/
 
 # My Personal Files and Directories
 fer/ignore/model.py
-# The csv is too large to include in the repository.
 data/dataset/fer2013.csv
 **test*.py
 !testmodel.py

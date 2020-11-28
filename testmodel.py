@@ -15,8 +15,9 @@ from util.imageops import resize, grayscale
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_data()
 
 datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
-model = model_from_json(open(os.path.join(datadir, "Model-20-0.5492.json"), "r").read())
-model.load_weights(os.path.join(datadir, "Model-20-0.5492.hdf5"))
+modeldir = os.path.join(os.path.dirname(__file__), "data", "model")
+model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())
+model.load_weights(os.path.join(datadir, "Model-20-0.5768.hdf5"))
 
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
@@ -24,8 +25,10 @@ model.compile(optimizer = Adam(),
 
 img = cv2.imread("test_imgs/unnamed.jpg")
 img = grayscale(resize(img))
-img = np.expand_dims(img, axis = 0)
 print(np.argmax(model.predict(img)))
+
+loss, acc = model.evaluate(X_test, y_test)
+print("Accuracy: " + str(acc))
 
 
 
