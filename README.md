@@ -67,6 +67,9 @@ Since the model has a convolutional architecture, fully-connected layers have be
 In general, it yields better results. The 2-D convolution layers can also be replaced with separable 2-D convolution layers,
 although regular convolution layers seem to yield better results with the image sizes of the `fer2013` dataset.
 
+The deep neural network for face detection makes use of a pre-trained model using the  ResNet architecture 
+[2](http://arxiv.org/abs/1512.03385).
+
 ## Data Pipelines
 
 The directories in this repository are integrated for a seamless transition sequence. All necessary data
@@ -81,3 +84,4 @@ repository and work with it, unfortunately no contributions will be accepted.
 ## References
 
 [1]: Simonyan, K., and Zisserman, A. (2015). Very deep convolutional networks for large-scale image recognition. ArXiv:1409.1556 [Cs]. http://arxiv.org/abs/1409.1556
+[2]: He, K., Zhang, X., Ren, S., & Sun, J. (2015). Deep residual learning for image recognition. ArXiv:1512.03385 [Cs]. http://arxiv.org/abs/1512.03385

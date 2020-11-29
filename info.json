@@ -1,5 +1,6 @@
 {
   "Face Cascade": "/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml",
   "Eye Cascade": "/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml",
-  "DNN Model": ""
+  "DNN Model": "./data/dnnfile/model.prototxt",
+  "DNN Weights": "./data/dnnfile/res10_300x300_ssd_iter_140000_fp16.caffemodel"
 }
