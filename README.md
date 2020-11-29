@@ -1,7 +1,7 @@
-# Facial Emotion Recognition
+# Engagement Detection
 
-This repository contains the source code for neural networks used in facial detection 
-and emotion recognition. 
+This repository contains the source code for neural networks used in facial detection, emotion recognition,
+and the overarching framework of engagement detection. 
 
 The `facevideo.py` file contains live facial detection from the computer webcam. The comments
 on the top of the file contain more information on usage of the different detectors. 
