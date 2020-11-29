@@ -63,8 +63,9 @@ is currently in progress.
 The model architecture I am currently using for the convolutional neural network is similar to that of VGG16 and VGG19 
 [\[1\]](http://arxiv.org/abs/1409.1556). 
 
-Since the model has a convolutional architecture, I replaced the fully-connected layers with a global average pooling layer. 
-In general, it yields better results.
+Since the model has a convolutional architecture, fully-connected layers have been replaced with a global average pooling layer. 
+In general, it yields better results. The 2-D convolution layers can also be replaced with separable 2-D convolution layers,
+although regular convolution layers seem to yield better results with the image sizes of the `fer2013` dataset.
 
 ## Data Pipelines
 
