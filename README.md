@@ -21,6 +21,12 @@ You can directly clone this repository from the command line:
 git clone https://github.com/amogh7joshi/fer.git
 ```
 
+Or, if you have the GitHub CLI installed, you can use:
+
+```shell script
+gh repo clone amogh7joshi/engagement-detection
+```
+
 Enter the directory and install system requirements:
 ```shell script
 # Enter Directory
@@ -68,7 +74,7 @@ In general, it yields better results. The 2-D convolution layers can also be rep
 although regular convolution layers seem to yield better results with the image sizes of the `fer2013` dataset.
 
 The deep neural network for face detection makes use of a pre-trained model using the  ResNet architecture 
-[2](http://arxiv.org/abs/1512.03385).
+[\[2\]](http://arxiv.org/abs/1512.03385).
 
 ## Data Pipelines
 
