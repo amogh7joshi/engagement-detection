@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding = utf-8 -*-
 
-from keras.models import load_model
-from keras.models import Sequential, Model
+from tensorflow.keras.models import load_model
+from tensorflow.keras.models import Sequential, Model
 
-from keras import layers
-from keras.layers import Conv2D, SeparableConv2D, MaxPooling2D, AveragePooling2D, BatchNormalization, GlobalAvgPool2D
-from keras.layers import Flatten, Dropout, Dense, Input, ReLU, Softmax
-from keras.regularizers import l2
-from keras.initializers import RandomNormal
+from tensorflow.keras import layers
+from tensorflow.keras.layers import Conv2D, SeparableConv2D, MaxPooling2D, AveragePooling2D, BatchNormalization, GlobalAvgPool2D
+from tensorflow.keras.layers import Flatten, Dropout, Dense, Input, ReLU, Softmax
+from tensorflow.keras.regularizers import l2
+from tensorflow.keras.initializers import RandomNormal
 
 # This file serves as storage for past (and current) models that I have used.
 # Each had their own different purposes for being removed. See them below for metrics.
