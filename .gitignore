@@ -13,6 +13,7 @@ fer/
 fer
 test_imgs/
 modded/
+lfw/
 imageruntest/
 data/dataset/*.*
 data/dataset/fer2013/*
