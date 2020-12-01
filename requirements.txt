@@ -1,7 +1,7 @@
 numpy
 pandas
 matplotlib
-searborn
+seaborn
 opencv-python
 imutils
 tensorflow
