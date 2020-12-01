@@ -14,7 +14,9 @@ fer
 test_imgs/
 modded/
 imageruntest/
-data/dataset/*
+data/dataset/*.*
+data/dataset/fer2013/*
+data/dataset/ck+/*
 data/dnnfile/*
 data/model/*
 data/savedmodels/*
