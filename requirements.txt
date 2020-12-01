@@ -1,8 +1,10 @@
 numpy
 pandas
 matplotlib
+searborn
 opencv-python
 imutils
 tensorflow
+scikit-learn
 mtcnn
 
