@@ -21,7 +21,6 @@ from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
 from data.load_data import get_fer2013_data
-from util.imageops import resize, grayscale
 
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
@@ -60,6 +59,7 @@ for path in list:
 vr = cv2.VideoCapture(0) # (VR -> Video Recognizer)
 time.sleep(1) # Allow camera to initialize.
 
+# Load classifiers and detectors.
 cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml')
 cascade_eye = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml')
 det = mtcnn.MTCNN()
