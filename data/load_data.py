@@ -4,8 +4,8 @@ import os
 import pickle
 
 
-def get_data(dir = None):
-   if dir is None: dir = os.path.join(os.path.dirname(__file__), "dataset")
+def get_fer2013_data(dir = None):
+   if dir is None: dir = os.path.join(os.path.dirname(__file__), "dataset", "fer2013")
    # Load image data.
    with open(os.path.join(dir, "X_train.pickle"), "rb") as file:
       X_train = pickle.load(file)

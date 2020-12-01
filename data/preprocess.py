@@ -18,7 +18,7 @@ global data
 try: data = pd.read_csv("dataset/fer2013.csv")
 except: raise FileNotFoundError("The file fer2013.csv does not exist.")
 
-datadir = os.path.join(os.path.dirname(__file__), "dataset")
+datadir = os.path.join(os.path.dirname(__file__), "dataset", "fer2013")
 emotions = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
 CLASSES = len(emotions)
 

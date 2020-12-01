@@ -20,10 +20,10 @@ from tensorflow.keras.models import model_from_json
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
-from data.load_data import get_data
+from data.load_data import get_fer2013_data
 from util.imageops import resize, grayscale
 
-X_train, X_validation, X_test, y_train, y_validation, y_test = get_data()
+X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
 datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
 model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())

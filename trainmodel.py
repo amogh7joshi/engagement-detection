@@ -18,7 +18,7 @@ from tensorflow.keras.initializers import RandomNormal
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-from data.load_data import get_data
+from data.load_data import get_fer2013_data
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--epochs", default = 10,
@@ -28,7 +28,7 @@ ap.add_argument("-r", "--reduction", default = False,
 args = vars(ap.parse_args())
 
 datadir = os.path.join(os.path.dirname(__file__), "data")
-X_train, X_validation, X_test, y_train, y_validation, y_test = get_data()
+X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
 # Use a smaller dataset of images. Note, this may result in callback issues.
 REDUCE = args['reduction'] # Specify the numerical reduction. Otherwise, this should be false.

@@ -38,8 +38,11 @@ python3 -m pip install -r requirements.txt
 
 Then, use the scripts provided in the `scripts` directory to install the necessary data:
 1. To install the model and caffemodel files for the DNN, use the `getdata.sh` script. 
-2. Download the `fer2013.csv` file from [here](https://www.kaggle.com/deadskull7/fer2013), 
-and run the `preprocess.sh` script. 
+2. Download the `fer2013.csv` file from [here](https://www.kaggle.com/deadskull7/fer2013), follow the directions in the `data`
+ subdirectory.
+3. Optionally, you can also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
+in the `data` subdirectory.
+4. Run the `preprocess.sh` script.
 
 For more information, visit the `data` subdirectory.
 
@@ -47,6 +50,8 @@ The `info.json` file contains the relevant locations of the cascade classifiers 
 You can replace the current locations with those on your computer. 
 
 ## Usage
+
+Currently, all models have been configured to work with the `fer2013` dataset. Integration with the `ck+` dataset is in progress.
 
 **Model Training**: Run the `trainmodel.py` script. You can edit the number of epochs in the argparse argument
 at the top of the file. Alternatively, you can run itt from the command line using the flags as mentioned by the 

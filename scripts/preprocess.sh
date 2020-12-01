@@ -16,6 +16,13 @@ else
   raise error "The dataset directory does not exist. Please re-download the repository and try again."
 fi
 
+if [ -d "./fer2013" ]; then
+  # shellcheck disable=SC2164
+  cd fer2013
+else
+  raise error "The fer2013 directory does not exist. Please re-download the repository and try again."
+fi
+
 # Remove existing data files.
 rm -f X_train.pickle
 rm -f X_validation.pickle
@@ -25,6 +32,7 @@ rm -f y_train.pickle
 rm -f y_validation.pickle
 rm -f y_test.pickle
 
+cd .. || exit
 cd .. || exit
 
 # Create data.
