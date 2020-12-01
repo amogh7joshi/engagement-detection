@@ -5,6 +5,7 @@ seaborn
 opencv-python
 imutils
 tensorflow
+keras
 scikit-learn
 mtcnn
 

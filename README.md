@@ -42,7 +42,7 @@ Then, use the scripts provided in the `scripts` directory to install the necessa
  subdirectory.
 3. Optionally, you can also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
 in the `data` subdirectory.
-4. Run the `preprocess.sh` script.
+4. Run the `preprocess.sh` script. It may take a couple of minutes.
 
 For more information, visit the `data` subdirectory.
 
