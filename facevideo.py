@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from util.imageops import resize, grayscale
-from util.constant import classes
+from util.constant import fer2013_classes
 
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.losses import categorical_crossentropy
@@ -102,7 +102,7 @@ while True:
          cv2.rectangle(frame, (x, y), (xe, ye), (0, 255, 255), 2)
          img = grayscale(resize(frame[x:xe, y:ye]))
          img = np.expand_dims(img, axis=0)
-         print(classes[np.argmax(model.predict(img))])
+         print(fer2013_classes[np.argmax(model.predict(img))])
 
    if detector.lower() == "cascade": # Cascade Detection
       faces = cascade_face.detectMultiScale(gray_frame, scaleFactor = 1.2, minNeighbors = 5)
