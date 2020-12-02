@@ -1,6 +1,6 @@
 # Engagement Detection
 
-![Faces](examples/allfaces.jpg)
+![Faces](examples/diagrams.png)
 
 This repository contains the source code for neural networks used in facial detection, emotion recognition,
 and the overarching framework of engagement detection. 

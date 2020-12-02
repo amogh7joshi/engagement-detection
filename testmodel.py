@@ -41,8 +41,13 @@ img = grayscale(resize(img))
 predictions = list(np.argmax(item) for item in model.predict(X_test))
 actual = list(np.argmax(item) for item in y_test)
 cf = confusion_matrix(predictions, actual)
-sns.heatmap(cf, annot = True)
+svm = sns.heatmap(cf, annot = True)
 plt.show()
+
+# Save for example purposes.
+fig = svm.get_figure()
+fig.savefig("examples/confusionmatrix.png")
+
 
 
 
