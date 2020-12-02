@@ -21,7 +21,7 @@ ap.add_argument("-i", "--image", default = None,
 args = vars(ap.parse_args())
 
 # If running from an IDE (not from command line), then enter images here.
-userimages = ["test_imgs/happyguy.png", "test_imgs/leftside.jpg", "test_imgs/rightsideup.jpeg"]
+userimages = ["test_imgs/groupphoto.jpg"]
 
 # Load classifiers and detectors.
 cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml')
@@ -31,7 +31,7 @@ datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
 net = cv2.dnn.readNetFromCaffe(os.path.join(datadir, "model.prototxt"),
                                os.path.join(datadir, "res10_300x300_ssd_iter_140000_fp16.caffemodel"))
 
-runchoice = "mtcnn"
+runchoice = ""
 detector = runchoice.lower() if runchoice.lower() in ["mtcnn", "dnn", "cascade", "fer"] else args["detector"]
 
 # Determine Images to Process
