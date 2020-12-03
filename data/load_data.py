@@ -31,7 +31,7 @@ def get_ckplus_data(dir = None):
    '''
    Load training data for the CK+ dataset.
    '''
-   if dir is None: os.path.join(os.path.dirname(__file__), "dataset", "ck+")
+   if dir is None: dir = os.path.join(os.path.dirname(__file__), "dataset", "ck+")
    # Load image data.
    with open(os.path.join(dir, "X_train.pickle"), "rb") as file:
       X_train = pickle.load(file)

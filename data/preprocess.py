@@ -116,11 +116,11 @@ def process_ckplus():
    y = np_utils.to_categorical(labels, 7)
    X, y = shuffle(img_data, y, random_state = 2)
 
-   X_train, X_test, y_train, y_test = train_test_split(
-      X, y, test_size = 1 - tr_r, random_state = 1
+   X_train, X_tmp, y_train, y_tmp = train_test_split(
+      X, y, train_size = 0.70, random_state = 1
    )
-   X_train, X_validation, y_train, y_validation = train_test_split(
-      X_test, y_test, test_size = ts_r/(ts_r+vl_r), random_state = 1
+   X_validation, X_test, y_validation, y_test = train_test_split(
+      X_tmp, y_tmp, train_size = 0.5, random_state = 1
    )
 
    savedir = os.path.join(os.path.dirname(__file__), "dataset", "ck+")
@@ -144,8 +144,9 @@ def process_ckplus():
    save_sets(X_train, X_validation, X_test, y_train, y_validation, y_test)
 
 # Process data from script.
-process_fer2013()
-process_ckplus()
+if __name__ == "__main__":
+   # process_fer2013()
+   process_ckplus()
 
 
 
