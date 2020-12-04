@@ -14,7 +14,7 @@ from pprint import pprint
 import numpy as np
 import matplotlib.pyplot as plt
 
-from util.imageops import resize, grayscale
+from util.baseimgops import resize, grayscale
 from util.constant import *
 
 from tensorflow.keras.models import model_from_json
@@ -101,10 +101,9 @@ while True:
          box = faces[0, 0, k, 3:7] * np.array([w, h, w, h])
          (x, y, xe, ye) = box.astype("int")
          cv2.rectangle(frame, (x, y), (xe, ye), (0, 255, 255), 2)
-         img = grayscale(resize(frame[x: xe, y: ye]))
-         img = np.expand_dims(img, axis = -1)
-         img = img / 255
-         pprint(ckplus_classes[np.argmax(model.predict(img))])
+         image = grayscale(resize(frame[x: xe, y: ye])) / 255
+         # img = np.expand_dims(img, axis = -1)
+         # pprint(ckplus_classes[np.argmax(model.predict(img))])
 
    if detector.lower() == "cascade": # Cascade Detection
       faces = cascade_face.detectMultiScale(gray_frame, scaleFactor = 1.2, minNeighbors = 5)
@@ -119,9 +118,6 @@ while True:
          for (x1, y1, w1, h1) in eyes:
             # cv2.rectangle(color_reg, (x1, y1), (x1 + w1, y1 + h1), (0, 0, 255), 2)
             pass
-
-   if detector.lower() == "fer": # Emotion Recognition
-      pass
 
    showPositionedWindow('frame', frame, CENTER_POS)
    # To save images from the video feed.

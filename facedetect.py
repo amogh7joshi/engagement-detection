@@ -11,7 +11,7 @@ import mtcnn
 import numpy as np
 import matplotlib.pyplot as plt
 
-from util.imageops import resize, grayscale
+from util.baseimgops import resize, grayscale
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--detector", default = "DNN",
