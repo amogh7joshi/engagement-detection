@@ -2,7 +2,7 @@ numpy
 pandas
 matplotlib
 seaborn
-opencv-python
+opencv-python-headless
 imutils
 tensorflow
 keras
