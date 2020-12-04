@@ -31,7 +31,7 @@ datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
 net = cv2.dnn.readNetFromCaffe(os.path.join(datadir, "model.prototxt"),
                                os.path.join(datadir, "res10_300x300_ssd_iter_140000_fp16.caffemodel"))
 
-runchoice = ""
+runchoice = "mtcnn"
 detector = runchoice.lower() if runchoice.lower() in ["mtcnn", "dnn", "cascade", "fer"] else args["detector"]
 
 # Determine Images to Process
@@ -54,9 +54,16 @@ for image in images:
       for face in faces:
          print(face)
          boundingbox = face['box']
+         keypoints = face['keypoints']
          cv2.rectangle(image, (boundingbox[0], boundingbox[1]),
                        (boundingbox[0] + boundingbox[2], boundingbox[1] + boundingbox[3]),
                        (0, 255, 255), 2)
+         # Keypoints
+         cv2.circle(image, (keypoints['left_eye']), 2, (0, 255, 255), 2)
+         cv2.circle(image, (keypoints['right_eye']), 2, (0, 255, 255), 2)
+         cv2.circle(image, (keypoints['nose']), 2, (0, 255, 255), 2)
+         cv2.circle(image, (keypoints['mouth_left']), 2, (0, 255, 255), 2)
+         cv2.circle(image, (keypoints['mouth_right']), 2, (0, 255, 255), 2)
 
    if detector.lower() == "dnn":  # DNN Detection
       (h, w) = image.shape[:2]
