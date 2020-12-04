@@ -22,3 +22,7 @@ data/dataset/ck+/*
 data/dnnfile/*
 data/model/*
 data/savedmodels/*
+
+# Temporary
+fec.py
+testckplus.py

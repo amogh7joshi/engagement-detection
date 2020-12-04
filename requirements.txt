@@ -8,4 +8,5 @@ tensorflow
 keras
 scikit-learn
 mtcnn
+requests
 
