@@ -10,23 +10,24 @@ import cv2
 import imutils
 import mtcnn
 
+from pprint import pprint
 import numpy as np
 import matplotlib.pyplot as plt
 
 from util.imageops import resize, grayscale
-from util.constant import fer2013_classes
+from util.constant import *
 
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
-from data.load_data import get_fer2013_data
+from data.load_data import get_ckplus_data
 
-X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
+X_train, X_validation, X_test, y_train, y_validation, y_test = get_ckplus_data()
 
 datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
-model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())
-model.load_weights(os.path.join(datadir, "Model-20-0.5768.hdf5"))
+model = model_from_json(open(os.path.join(datadir, "model.json"), "r").read())
+model.load_weights(os.path.join(datadir, "weights.h5"))
 
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
@@ -94,15 +95,16 @@ while True:
       blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300),swapRB = False, crop = False)
       net.setInput(blob)
       faces = net.forward()
-      for i in range(0, faces.shape[2]):
-         c = faces[0, 0, i, 2]
+      for k in range(0, faces.shape[2]):
+         c = faces[0, 0, k, 2]
          if c < 0.5: continue
-         box = faces[0, 0, i, 3:7] * np.array([w, h, w, h])
+         box = faces[0, 0, k, 3:7] * np.array([w, h, w, h])
          (x, y, xe, ye) = box.astype("int")
          cv2.rectangle(frame, (x, y), (xe, ye), (0, 255, 255), 2)
-         img = grayscale(resize(frame[x:xe, y:ye]))
-         img = np.expand_dims(img, axis=0)
-         print(fer2013_classes[np.argmax(model.predict(img))])
+         img = grayscale(resize(frame[x: xe, y: ye]))
+         img = np.expand_dims(img, axis = -1)
+         img = img / 255
+         pprint(ckplus_classes[np.argmax(model.predict(img))])
 
    if detector.lower() == "cascade": # Cascade Detection
       faces = cascade_face.detectMultiScale(gray_frame, scaleFactor = 1.2, minNeighbors = 5)

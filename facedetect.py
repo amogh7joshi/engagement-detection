@@ -21,7 +21,7 @@ ap.add_argument("-i", "--image", default = None,
 args = vars(ap.parse_args())
 
 # If running from an IDE (not from command line), then enter images here.
-userimages = ["test_imgs/groupphoto.jpg"]
+userimages = ["test_imgs/useless.jpg"]
 
 # Load classifiers and detectors.
 cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml')

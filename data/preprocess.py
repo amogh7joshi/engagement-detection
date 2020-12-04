@@ -95,6 +95,8 @@ def process_ckplus():
       for img in img_list:
          inp = cv2.imread(os.path.join(path, dataset, img))
          resize = cv2.resize(inp, (48, 48), interpolation = cv2.INTER_CUBIC)
+         # Convert Images to Grayscale
+         resize = np.expand_dims(cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY), axis = -1)
          datalist.append(resize)
 
    # Normalize Images.
@@ -145,7 +147,7 @@ def process_ckplus():
 
 # Process data from script.
 if __name__ == "__main__":
-   # process_fer2013()
+   process_fer2013()
    process_ckplus()
 
 

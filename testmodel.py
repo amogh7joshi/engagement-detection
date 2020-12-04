@@ -45,8 +45,10 @@ svm = sns.heatmap(cf, annot = True)
 plt.show()
 
 # Save for example purposes.
-fig = svm.get_figure()
-fig.savefig("examples/confusionmatrix.png")
+save = False
+if save:
+   fig = svm.get_figure()
+   fig.savefig("examples/confusionmatrix.png")
 
 
 

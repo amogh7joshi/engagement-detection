@@ -9,6 +9,7 @@ fer/ignore/model.py
 data/dataset/fer2013.csv
 **test*.py
 !testmodel.py
+!testckplus.py
 fer/
 fer
 test_imgs/
