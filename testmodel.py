@@ -15,7 +15,7 @@ from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
 from data.load_data import get_fer2013_data
-from util.imageops import resize, grayscale
+from util.baseimgops import resize, grayscale
 
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
