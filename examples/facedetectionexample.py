@@ -10,7 +10,7 @@ import imutils
 import numpy as np
 import matplotlib.pyplot as plt
 
-from util.imageops import resize, grayscale
+from util.baseimgops import resize, grayscale
 
 # If running from an IDE (not from command line), then enter images here.
 userimages = ["test_imgs/groupphoto.jpg"]
