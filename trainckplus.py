@@ -23,7 +23,7 @@ def build_model(classes):
 
    model = Sequential()
 
-   model.add(Conv2D(64, kernel_size = (3, 3), input_shape = (48, 48, 3), activation = 'relu', kernel_initializer = "he_normal"))
+   model.add(Conv2D(64, kernel_size = (3, 3), input_shape = (48, 48, 1), activation = 'relu', kernel_initializer = "he_normal"))
    model.add(BatchNormalization())
    model.add(Conv2D(64, kernel_size = (3, 3), activation = 'relu', kernel_initializer = "he_normal"))
    model.add(BatchNormalization())

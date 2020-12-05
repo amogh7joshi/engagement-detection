@@ -67,10 +67,15 @@ location at the top of the file. From there, you can run `model.evaluate` on the
 you can run `model.predict` on any custom images you want to test, or run any other operations with the model. 
 A confusion matrix is also present, which will display if `plt.show()` is uncommented.
 
-**Face Detection**: Run the `facevideo.py` script. You can choose which detector you want to use, as described at the top of the file. 
-If you want to save images, set the `-s` flag to `True`, and they will save to a custom directory at the top-level. 
+**Live Face Detection**: Run the `facevideo.py` script. You can choose which detector you want to use, as described at the top of the file. 
+If you want to save images, set the `-s` flag to `True`, and they will save to a custom directory `imageruntest` at the top-level. 
 More information is included at the top of the file. An implementation of the emotion detection model into this script
 is currently in progress. 
+
+**Image Face Detection**: Run the `facedetect.py` script. If running from the command line, then read the argument information at the top of the file. 
+Otherwise, insert the paths of the images that you want to detect faces from into a list called `user_images` midway through the file. The changed images will save
+to a custom directory called `modded`, but you can change that from the `savedir` variable. For each image inputted, the script will output the same image
+with a bounding box around the faces detected from the image.
 
 ## Neural Network Information
 

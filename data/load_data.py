@@ -3,7 +3,6 @@
 import os
 import pickle
 
-
 def get_fer2013_data(dir = None):
    '''
    Load training data for the fer2013 dataset.
