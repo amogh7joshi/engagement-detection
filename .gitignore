@@ -5,6 +5,7 @@ __pycache__/
 **/__pycache__/
 
 # My Personal Files and Directories
+*.hdf5
 fer/ignore/model.py
 data/dataset/fer2013.csv
 **test*.py
