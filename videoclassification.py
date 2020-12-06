@@ -26,8 +26,8 @@ with open('info.json') as f:
    cascade = file['Face Cascade']
 
 face_detector = cv2.CascadeClassifier(cascade)
-# emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/fer2013_mini_XCEPTION.102-0.66.hdf5')
-emotion_model_path = "./Model-48-0.6333.hdf5"
+emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-49-0.6424.hdf5')
+# emotion_model_path = "./Model-48-0.6333.hdf5"
 emotion_labels = fer2013_classes
 
 # Choose Model
@@ -36,7 +36,12 @@ cascade = True
 
 # Bounding
 frame_window = 10
-emotion_offsets = (30, 40)
+if dnn:
+   emotion_offsets = (45, 40)
+elif cascade:
+   emotion_offsets = (20, 40)
+else:
+   raise ValueError("You must select one of dnn or cascade.")
 
 # Load Models
 net = cv2.dnn.readNetFromCaffe(dnn_model, dnn_weights)
