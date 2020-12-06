@@ -30,14 +30,31 @@ Or, if you have the GitHub CLI installed, you can use:
 gh repo clone amogh7joshi/engagement-detection
 ```
 
-Enter the directory and install system requirements:
+Enter the directory:
 ```shell script
 # Enter Directory
 cd fer
+```
+To install the relevant data used in the repository, a Makefile is provided:
 
+```shell script
+make install
+```
+
+Then, 
+1. Download the `fer2013.csv` file from [here](https://www.kaggle.com/deadskull7/fer2013), follow the directions in the `data`
+ subdirectory.
+2. Optionally, you can also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
+in the `data` subdirectory.
+3. Run the `preprocess.sh` script. It may take a couple of minutes.
+
+If you would like to install manually, install system requirements:
+
+```shell script
 # Install System Requirements
 python3 -m pip install -r requirements.txt
 ```
+
 
 Then, use the scripts provided in the `scripts` directory to install the necessary data:
 1. To install the model and caffemodel files for the DNN, use the `getdata.sh` script. 
@@ -48,6 +65,9 @@ in the `data` subdirectory.
 4. Run the `preprocess.sh` script. It may take a couple of minutes.
 
 For more information, visit the `data` subdirectory.
+
+The other tools in the Makefile are for convenience purposes only when committing to this repository, 
+in addition to the `editconstant.sh` script. Do not use them unless you are commiting to your own repository.
 
 The `info.json` file contains the relevant locations of the cascade classifiers and DNN model files.
 You can replace the current locations with those on your computer. 
