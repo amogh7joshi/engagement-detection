@@ -149,7 +149,8 @@ while True:
 
          color = color.astype(int).tolist()
 
-         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
+         # For Testing:
+         # cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
          cv2.rectangle(frame, (x, y), (xe, ye), color, 3)
          cv2.putText(frame, emotion_mode, (x + 0, y - 45), cv2.FONT_HERSHEY_SIMPLEX,
                      1, color, 3, cv2.LINE_AA)
