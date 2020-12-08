@@ -10,3 +10,8 @@ def __const(set, result):
          return (20, 40)
       if result == "classes":
          return fer2013_classes
+
+# Personal Convenience
+CENTER_X = 100
+CENTER_Y = 80
+CENTER_POS = (CENTER_X, CENTER_Y)

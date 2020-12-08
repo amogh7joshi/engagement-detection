@@ -33,8 +33,8 @@ emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/M
 emotion_labels = fer2013_classes
 
 # Choose Cascade vs DNN
-dnn = False
-cascade = True
+dnn = True
+cascade = False
 
 # Bounding
 image_window = 10
@@ -55,7 +55,7 @@ emotion_window = []
 
 # If running from an IDE (not from command line), then enter images here.
 savedir = "modded" # Directory to save changed images.
-userimages = ["./test_imgs/amoghisevenmoredamnhappy.jpg"]
+userimages = ["./test_imgs/amoghangry.jpg"]
 
 for image in userimages:
    file, extension = os.path.splitext(image)
@@ -80,7 +80,7 @@ for image in userimages:
          except:
             continue
 
-         gray_face = preprocess_input(gray_face, True)
+         gray_face = preprocess_input(gray_face, False)
          gray_face = np.expand_dims(gray_face, 0)
          gray_face = np.expand_dims(gray_face, -1)
          emotion_prediction = emotion_classifier.predict(gray_face)
@@ -137,7 +137,7 @@ for image in userimages:
          except:
             continue
 
-         gray_face = preprocess_input(gray_face, True)
+         gray_face = preprocess_input(gray_face, False)
          gray_face = np.expand_dims(gray_face, 0)
          gray_face = np.expand_dims(gray_face, -1)
          emotion_prediction = emotion_classifier.predict(gray_face)
@@ -180,3 +180,4 @@ for image in userimages:
          image[y1: y1 + h1, x1: x1 + w1] = bg[y1: y1 + h1, x1: x1 + w1]
 
    cv2.imwrite(os.path.join(savedir or "", f"{file}-detect{extension}"), image)
+

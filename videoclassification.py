@@ -13,7 +13,7 @@ from util.constant import fer2013_classes
 from util.classifyimgops import apply_offsets
 from util.classifyimgops import preprocess_input
 
-# Window Position Coordinates
+# Window Position Coordinates (MacBook Pro 13-inch)
 CENTER_X = 100
 CENTER_Y = 80
 CENTER_POS = (CENTER_X, CENTER_Y)
@@ -30,14 +30,14 @@ emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/M
 # emotion_model_path = "./Model-48-0.6333.hdf5"
 emotion_labels = fer2013_classes
 
-# Choose Model
-dnn = False
-cascade = True
+# Choose Model (only one)
+dnn = True
+cascade = False
 
 # Bounding
 frame_window = 10
 if dnn:
-   emotion_offsets = (45, 40)
+   emotion_offsets = (55, 45)
 elif cascade:
    emotion_offsets = (20, 40)
 else:
@@ -64,7 +64,7 @@ while True:
    _, frame = vr.read()
    gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
    if dnn:
-      blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300), swapRB=False, crop=False)
+      blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300), swapRB = False, crop = False)
       net.setInput(blob)
       faces = net.forward()
    if cascade:
@@ -106,7 +106,7 @@ while True:
 
          x, y, w, h = face_coordinates
 
-         cv2.rectangle(frame, (x, y), (x + w, y + h), color, 3)
+         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
          cv2.putText(frame, emotion_mode, (x + 0, y - 45), cv2.FONT_HERSHEY_SIMPLEX,
                      1, color, 3, cv2.LINE_AA)
 
@@ -117,7 +117,7 @@ while True:
          if c < 0.5: continue
          box = faces[0, 0, k, 3:7] * np.array([w, h, w, h])
          (x, y, xe, ye) = box.astype("int")
-         face_coordinates = (x, y, xe, ye)
+         face_coordinates = (x, y, xe - x, ye - y)
          x1, x2, y1, y2 = apply_offsets(face_coordinates, emotion_offsets)
          gray_face = gray_image[y1: y2, x1: x2]
          try: gray_face = cv2.resize(gray_face, (emotion_target_size))
@@ -147,10 +147,9 @@ while True:
          else:
             color = emotion_probability * np.asarray((0, 255, 0))
 
-         color = color.astype(int)
-         color = color.tolist()
+         color = color.astype(int).tolist()
 
-         x, y, w, h = face_coordinates
+         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
          cv2.rectangle(frame, (x, y), (xe, ye), color, 3)
          cv2.putText(frame, emotion_mode, (x + 0, y - 45), cv2.FONT_HERSHEY_SIMPLEX,
                      1, color, 3, cv2.LINE_AA)

@@ -3,6 +3,7 @@
 import os
 import sys
 import glob
+import json
 import time
 import argparse
 
@@ -15,6 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from util.baseimgops import resize, grayscale
+from util.classifyimgops import apply_offsets
 from util.constant import *
 
 from tensorflow.keras.models import model_from_json
@@ -36,7 +38,7 @@ model.compile(optimizer = Adam(),
 # A program that detects faces from a continuous video feed.
 # If running the program from the command line, you can choose the detector using the -m flag.
 # Otherwise, if running in an IDE, set the below "runchoice" variable to whatever choice you want.
-# # Currently, the DNN is the best detector. It will always default to DNN and the -m argument, but it can be overridden.
+# Currently, the DNN is the best detector. It will always default to DNN and the -m argument, but it can be overridden.
 # Make sure "runchoice" is "None" if you are not using it.
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", default = "DNN",
@@ -61,14 +63,20 @@ vr = cv2.VideoCapture(0) # (VR -> Video Recognizer)
 time.sleep(1) # Allow camera to initialize.
 
 # Load classifiers and detectors.
-cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml')
-cascade_eye = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml')
-det = mtcnn.MTCNN()
-datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
-net = cv2.dnn.readNetFromCaffe(os.path.join(datadir, "model.prototxt"),
-                               os.path.join(datadir, "res10_300x300_ssd_iter_140000_fp16.caffemodel"))
+with open('info.json') as f:
+   file = json.load(f)
+   cascade_face = cv2.CascadeClassifier(file['Face Cascade'])
+   cascade_eye = cv2.CascadeClassifier(file['Eye Cascade'])
+   dnn_model = file['DNN Model']
+   dnn_weights = file['DNN Weights']
 
-# Bring the video screen to the front (MACOS ONLY).
+# cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml')
+# cascade_eye = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml')
+det = mtcnn.MTCNN()
+# datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
+net = cv2.dnn.readNetFromCaffe(dnn_model, dnn_weights)
+
+# Bring the video screen to the front (MacOS ONLY).
 if sys.platform == "darwin": os.system("""osascript -e 'tell app "Finder" to set frontmost of process "Python" to be true'""")
 def showPositionedWindow(window_name, img_name, coords):
    cv2.namedWindow(window_name)
@@ -92,7 +100,7 @@ while True:
 
    if detector.lower() == "dnn": # DNN Detection
       (h, w) = frame.shape[:2]
-      blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300),swapRB = False, crop = False)
+      blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300), swapRB = False, crop = False)
       net.setInput(blob)
       faces = net.forward()
       for k in range(0, faces.shape[2]):
@@ -100,6 +108,9 @@ while True:
          if c < 0.5: continue
          box = faces[0, 0, k, 3:7] * np.array([w, h, w, h])
          (x, y, xe, ye) = box.astype("int")
+         # FOR TESTING
+         # face_coordinates = (x, y, xe, ye)
+         # x1, x2, y1, y2 = apply_offsets(face_coordinates, (20, 40))
          cv2.rectangle(frame, (x, y), (xe, ye), (0, 255, 255), 2)
          image = grayscale(resize(frame[x: xe, y: ye])) / 255
          # img = np.expand_dims(img, axis = -1)
