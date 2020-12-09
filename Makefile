@@ -1,8 +1,7 @@
 install:
 	python3 -m pip install -r requirements.txt
-	cd scripts
-	chmod u+x getdata.sh
-	./getdata.sh
+	chmod u+x scripts/getdata.sh
+	scripts/getdata.sh
 hide:
 	chmod u+x scripts/editconstant.sh
 	scripts/editconstant.sh hide
