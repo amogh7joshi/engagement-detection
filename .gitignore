@@ -28,3 +28,4 @@ data/savedmodels/*
 fec.py
 testckplus.py
 checkpoints/*
+!data/dataset/DAiSEE/*
