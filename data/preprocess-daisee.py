@@ -31,7 +31,14 @@ def split_video():
             for video in videos:
                 # Watch out for .DS_Store on MacOS.
                 if sys.platform == "darwin" and video == ".DS_Store": continue
-                clip = os.listdir(os.path.join(datadir, dataset, user, video))[0]
+                clip = os.listdir(os.path.join(datadir, dataset, user, video))# - [0]
+                try:
+                    if clip[0].endswith((".jpg", ".png")) or clip[1].endswith((".jpg", ".png")):
+                        print(f"Skipping Video {video} --> Already Extracted")
+                        continue
+                except IndexError: clip = clip[0]
+
+                # Extraction
                 print(f"Video {clip} Extraction Beginning... ", end = ' ')
                 # print(clip)
                 # print(clip[:-4])
@@ -39,7 +46,9 @@ def split_video():
                 split(clip, video, os.path.join(datadir, dataset, user, video))
                 i += 1; print(f"Video {clip} Extraction Complete!")
 
-# Utility Function to remove unnecessary Files
+# Utility Function to remove unnecessary files.
+# USE WITH CAUTION --> It will delete ALL images from directories.
+# Should only be used as for intermediate cleaning or if absolutely necessary, a complete image removal function.
 def remove_files():
     for dirpath, dirnames, filenames in os.walk(os.path.join(os.path.dirname(__file__), 'dataset', 'daisee-dataset')):
         for file in filenames:
@@ -47,6 +56,5 @@ def remove_files():
                 os.remove(os.path.join(dirpath, file))
 
 if __name__ == '__main__':
-    print("Currently Doing Nothing.")
-    # split_video()
+    split_video()
 
