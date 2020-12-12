@@ -6,6 +6,7 @@ __pycache__/
 
 # My Personal Files and Directories
 *.hdf5
+*.caffemodel
 fer/ignore/model.py
 data/dataset/fer2013.csv
 **test*.py
@@ -28,4 +29,7 @@ data/savedmodels/*
 fec.py
 testckplus.py
 checkpoints/*
-!data/dataset/DAiSEE/*
+pose-detection/face/*
+pose-detection/hand/*
+pose-detection/pose/*
+pose-detection/getModels.sh
