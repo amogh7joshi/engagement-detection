@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.metrics import confusion_matrix
+from tensorflow.keras.models import load_model
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
@@ -20,22 +21,24 @@ from util.baseimgops import resize, grayscale
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
 # Choose which model to load, and from what directory (model, savedmodels).
+# Additionally, choose whether loading only from weights or from architecture + weights.
 datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
 modeldir = os.path.join(os.path.dirname(__file__), "data", "model")
-model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())
-model.load_weights(os.path.join(datadir, "Model-20-0.5768.hdf5"))
+# model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())
+# model.load_weights(os.path.join(datadir, "Model-20-0.5768.hdf5"))
+model = load_model(os.path.join(datadir, "Model-27-0.6631.hdf5"))
 
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
               metrics = ['accuracy'])
 
-img = cv2.imread("test_imgs/unnamed.jpg")
-img = grayscale(resize(img))
+# img = cv2.imread("test_imgs/unnamed.jpg")
+# img = grayscale(resize(img))
 # print(np.argmax(model.predict(img)))
 
 
-# loss, acc = model.evaluate(X_test, y_test)
-# print("Accuracy: " + str(acc))
+loss, acc = model.evaluate(X_test, y_test)
+print("Accuracy: " + str(acc))
 
 # Confusion Matrix
 predictions = list(np.argmax(item) for item in model.predict(X_test))
