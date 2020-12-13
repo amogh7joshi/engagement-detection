@@ -2,8 +2,8 @@
 # -*- coding = utf-8 -*-
 import os
 import sys
-
 import pickle
+import argparse
 
 import cv2
 import numpy as np
@@ -12,6 +12,18 @@ import pandas as pd
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from keras.utils import np_utils
+
+def preprocess_input(x, v2 = True):
+   '''
+   Preprocess and normalize input image.
+   From the ../util/classifyimgops.py script, only brought here for preprocessing.
+   '''
+   x = x.astype('float32')
+   x = x / 255.0
+   if v2:
+      x = x - 0.5
+      x = x * 2.0
+   return x
 
 def process_fer2013():
    '''
@@ -52,6 +64,10 @@ def process_fer2013():
       X_train = X_train.reshape(X_train.shape[0], w, h, d)
       X_validation = X_validation.reshape(X_validation.shape[0], w, h, d)
       X_test = X_test.reshape(X_test.shape[0], w, h, d)
+
+      X_train = preprocess_input(X_train)
+      X_validation = preprocess_input(X_validation)
+      X_test = preprocess_input(X_test)
 
       # Save all image sets to pickle files.
       with open(os.path.join(datadir, "X_train.pickle"), "wb") as file:
