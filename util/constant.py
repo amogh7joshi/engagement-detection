@@ -1,5 +1,6 @@
 fer2013_classes = ["angry", "disgust", "fear", "happy", "sad", "surprise", "neutral"]
 ckplus_classes = ["anger", "contempt", "disgust", "fear", "happiness", "sadness", "surprise"]
+modified_emotion_classes = ['neutral', 'surprise', 'emotional', 'expressive']
 
 def __const(set, result):
    '''
