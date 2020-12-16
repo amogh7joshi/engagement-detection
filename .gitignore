@@ -29,7 +29,4 @@ data/savedmodels/*
 fec.py
 testckplus.py
 checkpoints/*
-pose-detection/face/*
-pose-detection/hand/*
-pose-detection/pose/*
-pose-detection/getModels.sh
+pose-detection/openpose-stuff/*
