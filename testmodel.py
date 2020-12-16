@@ -15,7 +15,7 @@ from tensorflow.keras.models import model_from_json
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
-from data.load_data import get_fer2013_data
+from data.load_data import get_fer2013_data, get_ckplus_data
 from util.baseimgops import resize, grayscale
 
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
@@ -26,7 +26,7 @@ datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
 modeldir = os.path.join(os.path.dirname(__file__), "data", "model")
 # model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())
 # model.load_weights(os.path.join(datadir, "Model-20-0.5768.hdf5"))
-model = load_model(os.path.join(datadir, "Model-27-0.6631.hdf5"))
+model = load_model(os.path.join(datadir, "more-interesting-0.627.hdf5"))
 
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
@@ -35,7 +35,6 @@ model.compile(optimizer = Adam(),
 # img = cv2.imread("test_imgs/unnamed.jpg")
 # img = grayscale(resize(img))
 # print(np.argmax(model.predict(img)))
-
 
 loss, acc = model.evaluate(X_test, y_test)
 print("Accuracy: " + str(acc))
