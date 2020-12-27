@@ -24,9 +24,11 @@ data/dataset/ck+/*
 data/dnnfile/*
 data/model/*
 data/savedmodels/*
+pose-detection/
 
 # Temporary
 fec.py
 testckplus.py
 checkpoints/*
 pose-detection/openpose-stuff/*
+custom-xception.py
