@@ -167,3 +167,38 @@ def model(input, classes, l2_reg = 0.01):
 
    model = Model(img_input, output)
    return model
+
+# CK+ Model, ~95%+ accuracy (98+)
+def build_model(classes):
+
+   model = Sequential()
+
+   model.add(Conv2D(64, kernel_size = (3, 3), input_shape = (48, 48, 1), activation = 'relu', kernel_initializer = "he_normal"))
+   model.add(BatchNormalization())
+   model.add(Conv2D(64, kernel_size = (3, 3), activation = 'relu', kernel_initializer = "he_normal"))
+   model.add(BatchNormalization())
+   model.add(MaxPooling2D(pool_size = (2, 2), strides = (1, 1)))
+   model.add(Dropout(0.4))
+
+   model.add(Conv2D(128, kernel_size = (3, 3), activation = 'relu', kernel_initializer = "he_normal"))
+   model.add(BatchNormalization())
+   model.add(Conv2D(128, kernel_size = (3, 3), activation = 'relu', kernel_initializer = "he_normal"))
+   model.add(BatchNormalization())
+   model.add(MaxPooling2D(pool_size = (2, 2), strides = (1, 1)))
+   model.add(Dropout(0.4))
+
+   model.add(Conv2D(256, kernel_size = (3, 3), activation = 'relu', kernel_initializer = "he_normal"))
+   model.add(BatchNormalization())
+   model.add(Conv2D(256, kernel_size = (3, 3), activation = 'relu', kernel_initializer = "he_normal"))
+   model.add(BatchNormalization())
+   model.add(MaxPooling2D(pool_size = (2, 2), strides = (1, 1)))
+   model.add(Dropout(0.4))
+
+   model.add(Flatten())
+   model.add(Dense(128, activation = 'relu'))
+   model.add(BatchNormalization())
+   model.add(Dropout(0.6))
+   model.add(Dense(classes, activation = 'softmax'))
+
+   return model
+
