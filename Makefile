@@ -8,3 +8,5 @@ hide:
 show:
 	chmod u+x scripts/editconstant.sh
 	scripts/editconstant.sh show
+submodule:
+	git submodule update --remote --merge
