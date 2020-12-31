@@ -29,6 +29,6 @@ pose-detection/
 # Temporary
 fec.py
 testckplus.py
-checkpoints/*
+checkpoints/checka.py
 pose-detection/openpose-stuff/*
 custom-xception.py
