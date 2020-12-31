@@ -21,7 +21,7 @@ there on downloading any necessary files and the location of saved files.
 You can directly clone this repository from the command line:
 
 ```shell script
-git clone https://github.com/amogh7joshi/fer.git
+git clone https://github.com/amogh7joshi/engagement-detection.git
 ```
 
 Or, if you have the GitHub CLI installed, you can use:
@@ -33,7 +33,7 @@ gh repo clone amogh7joshi/engagement-detection
 Enter the directory:
 ```shell script
 # Enter Directory
-cd fer
+cd engagement-detection
 ```
 To install the relevant data used in the repository, a Makefile is provided:
 
@@ -74,6 +74,8 @@ You can replace the current locations with those on your computer.
 
 ## Usage
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/amogh7joshi/chemsolve/CodeQL)
+
 Currently, all models have been configured to work with the `fer2013` dataset. Integration with the `ck+` dataset is in progress.
 
 **Model Training**: Run the `trainmodel.py` script. You can edit the number of epochs in the argparse argument
@@ -99,15 +101,20 @@ with a bounding box around the faces detected from the image.
 
 ## Neural Network Information
 
-The model architecture I am currently using for the convolutional neural network is similar to that of VGG16 and VGG19 
-[\[1\]](http://arxiv.org/abs/1409.1556). 
+The model architecture I am currently using for the emotion recognition convolutional neural network is roughly developed as a miniature version of the 
+Xception model [\[1\]](https://arxiv.org/abs/1610.02357).
+
+
+Initially, I had chosen to use one similar to the likes of VGG16 and VGG19 
+[\[2\]](http://arxiv.org/abs/1409.1556), but chose against it due to issues which arised during training, and its
+lack of any residual connections.
 
 Since the model has a convolutional architecture, fully-connected layers have been replaced with a global average pooling layer. 
 In general, it yields better results. The 2-D convolution layers can also be replaced with separable 2-D convolution layers,
 although regular convolution layers seem to yield better results with the image sizes of the `fer2013` dataset.
 
 The deep neural network for face detection makes use of a pre-trained model using the  ResNet architecture 
-[\[2\]](http://arxiv.org/abs/1512.03385).
+[\[3\]](http://arxiv.org/abs/1512.03385).
 
 ## Data Pipelines
 
@@ -121,7 +128,9 @@ The code in this repository is available under the [MIT License](https://github.
 repository and work with it, unfortunately no contributions will be accepted. 
 
 ## References
+[1]: Chollet, F. (2017). Xception: Deep learning with depthwise separable convolutions. 
+ArXiv:1610.02357 [Cs]. http://arxiv.org/abs/1610.02357
 
-[1]: Simonyan, K., and Zisserman, A. (2015). Very deep convolutional networks for large-scale image recognition. ArXiv:1409.1556 [Cs]. http://arxiv.org/abs/1409.1556
+[2]: Simonyan, K., and Zisserman, A. (2015). Very deep convolutional networks for large-scale image recognition. ArXiv:1409.1556 [Cs]. http://arxiv.org/abs/1409.1556
 
-[2]: He, K., Zhang, X., Ren, S., & Sun, J. (2015). Deep residual learning for image recognition. ArXiv:1512.03385 [Cs]. http://arxiv.org/abs/1512.03385
+[3]: He, K., Zhang, X., Ren, S., & Sun, J. (2015). Deep residual learning for image recognition. ArXiv:1512.03385 [Cs]. http://arxiv.org/abs/1512.03385
