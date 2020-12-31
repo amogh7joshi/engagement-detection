@@ -3,7 +3,7 @@
 import os
 import sys
 import json
-from statistics import mode
+import statistics
 
 import cv2
 from keras.models import load_model
@@ -26,7 +26,7 @@ with open('info.json') as f:
    cascade = file['Face Cascade']
 
 face_detector = cv2.CascadeClassifier(cascade)
-emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-49-0.6424.hdf5')
+emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-49-0.6572.hdf5')
 # emotion_model_path = "./Model-48-0.6333.hdf5"
 emotion_labels = fer2013_classes
 
@@ -77,17 +77,20 @@ while True:
          try: gray_face = cv2.resize(gray_face, (emotion_target_size))
          except: continue
 
+         # Preprocess & Classify Instantaneous Emotion
          gray_face = preprocess_input(gray_face, True)
          gray_face = np.expand_dims(gray_face, 0)
          gray_face = np.expand_dims(gray_face, -1)
          emotion_prediction = emotion_classifier.predict(gray_face)
+
+         # Set up a range of emotions from which to display from.
          emotion_probability = np.max(emotion_prediction)
          emotion_label_arg = np.argmax(emotion_prediction)
          emotion_text = emotion_labels[emotion_label_arg]
          emotion_window.append(emotion_text)
 
          if len(emotion_window) > frame_window: emotion_window.pop(0)
-         try: emotion_mode = mode(emotion_window)
+         try: emotion_mode = statistics.mode(emotion_window)
          except: continue
 
          if emotion_text == 'happy':
@@ -123,17 +126,20 @@ while True:
          try: gray_face = cv2.resize(gray_face, (emotion_target_size))
          except: continue
 
+         # Preprocess & Classify Instantaneous Emotion
          gray_face = preprocess_input(gray_face, True)
          gray_face = np.expand_dims(gray_face, 0)
          gray_face = np.expand_dims(gray_face, -1)
          emotion_prediction = emotion_classifier.predict(gray_face)
+
+         # Set up a range of emotions from which to display from.
          emotion_probability = np.max(emotion_prediction)
          emotion_label_arg = np.argmax(emotion_prediction)
          emotion_text = emotion_labels[emotion_label_arg]
          emotion_window.append(emotion_text)
 
          if len(emotion_window) > frame_window: emotion_window.pop(0)
-         try: emotion_mode = mode(emotion_window)
+         try: emotion_mode = statistics.mode(emotion_window)
          except: continue
 
          if emotion_text == 'happy':
@@ -156,7 +162,7 @@ while True:
                      1, color, 3, cv2.LINE_AA)
 
    showPositionedWindow('frame', frame, CENTER_POS)
-   if cv2.waitKey(1) & 0xFF == ord('z'):
+   if cv2.waitKey(1) and 0xFF == ord('z'):
       break
 
 vr.release()

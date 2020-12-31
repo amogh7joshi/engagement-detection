@@ -10,6 +10,7 @@ import cv2
 import numpy as np
 from keras.models import load_model
 
+from data.load_data import get_fer2013_data
 from util.constant import fer2013_classes
 from util.classifyimgops import apply_offsets
 from util.classifyimgops import preprocess_input
@@ -29,7 +30,7 @@ with open('info.json') as f:
    classifier = file['Face Cascade']
 
 face_detector = cv2.CascadeClassifier(classifier)
-emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-49-0.6424.hdf5')
+emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-27-0.6631.hdf5')
 emotion_labels = fer2013_classes
 
 # Choose Cascade vs DNN
@@ -55,7 +56,7 @@ emotion_window = []
 
 # If running from an IDE (not from command line), then enter images here.
 savedir = "modded" # Directory to save changed images.
-userimages = ["./test_imgs/amoghangry.jpg"]
+userimages = ["./test_imgs/amoghneutralnew.jpg"]
 
 for image in userimages:
    file, extension = os.path.splitext(image)
@@ -137,7 +138,8 @@ for image in userimages:
          except:
             continue
 
-         gray_face = preprocess_input(gray_face, False)
+         gray_face = cv2.flip(gray_face, 1)
+         # gray_face = preprocess_input(gray_face, False)
          gray_face = np.expand_dims(gray_face, 0)
          gray_face = np.expand_dims(gray_face, -1)
          emotion_prediction = emotion_classifier.predict(gray_face)
@@ -169,15 +171,15 @@ for image in userimages:
          x, y, w, h = face_coordinates
          cv2.rectangle(image, (x, y), (xe, ye), color, 3)
          # cv2.rectangle(image, (x, y), (x + w, y + h), color, 3)
-         cv2.putText(image, emotion_mode, (x + 0, y - 45), cv2.FONT_HERSHEY_SIMPLEX,
-                     1, color, 3, cv2.LINE_AA)
+         cv2.putText(image, emotion_mode, (x + 0, y - 80), cv2.FONT_HERSHEY_SIMPLEX,
+                     3, color, 3, cv2.LINE_AA)
          # Print a background behind the text.
-         bg = np.full((image.shape), (0, 0, 0), dtype = np.uint8)
-         cv2.putText(bg, emotion_mode, (x + 0, y - 45), cv2.FONT_HERSHEY_SIMPLEX,
-                     1, color, 3, cv2.LINE_AA)
-         x1, y1, w1, h1 = cv2.boundingRect(bg[:,:,2])
-         print(x1, y1, w1, h1)
-         image[y1: y1 + h1, x1: x1 + w1] = bg[y1: y1 + h1, x1: x1 + w1]
+         # bg = np.full((image.shape), (0, 0, 0), dtype = np.uint8)
+         # cv2.putText(bg, emotion_mode, (x + 0, y - 45), cv2.FONT_HERSHEY_SIMPLEX,
+         #             1, color, 3, cv2.LINE_AA)
+         # x1, y1, w1, h1 = cv2.boundingRect(bg[:,:,2])
+         # print(x1, y1, w1, h1)
+         # image[y1: y1 + h1, x1: x1 + w1] = bg[y1: y1 + h1, x1: x1 + w1]
 
    cv2.imwrite(os.path.join(savedir or "", f"{file}-detect{extension}"), image)
 
