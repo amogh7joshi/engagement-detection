@@ -5,7 +5,6 @@ import sys
 import argparse
 
 import cv2
-import imutils
 import mtcnn
 
 import numpy as np

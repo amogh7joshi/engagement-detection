@@ -3,7 +3,6 @@ pandas
 matplotlib
 seaborn
 opencv-python-headless
-imutils
 tensorflow
 keras
 scikit-learn

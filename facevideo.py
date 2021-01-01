@@ -8,7 +8,6 @@ import time
 import argparse
 
 import cv2
-import imutils
 import mtcnn
 
 from pprint import pprint
