@@ -5,7 +5,7 @@ import os
 import cv2
 import numpy as np
 
-from .constant import __const
+from .constant import _const
 
 def preprocess_input(x, v2 = True):
    '''
@@ -22,7 +22,7 @@ def apply_offsets(coords, offsets = "fer2013"):
    '''
    Apply offsets to input bounding box coordinates.
    '''
-   if isinstance(offsets, str): offsets = __const(offsets, "offsets")
+   if isinstance(offsets, str): offsets = _const(offsets, "offsets")
    x, y, w, h = coords
    x_o, y_o = offsets
    return x - x_o, x + w + x_o, y - y_o, y + h + y_o

@@ -2,7 +2,7 @@ fer2013_classes = ["angry", "disgust", "fear", "happy", "sad", "surprise", "neut
 ckplus_classes = ["anger", "contempt", "disgust", "fear", "happiness", "sadness", "surprise"]
 modified_emotion_classes = ['neutral', 'surprise', 'emotional', 'expressive']
 
-def __const(set, result):
+def _const(set, result):
    '''
    Convenience method to determine values for certain datasets.
    '''
