@@ -5,6 +5,8 @@
 This repository contains the source code for neural networks used in facial detection, emotion recognition,
 and the overarching framework of engagement detection. 
 
+Currently, emotion detection has been implemented from the `fer2013` dataset, and can be used for image and live 
+video classification, in the `videoclassification.py` and `emotionclassification.py` scripts. 
 The `facevideo.py` file contains live facial detection from the computer webcam. The comments
 on the top of the file contain more information on usage of the different detectors. The `facedetect.py` also contains 
 facial detection, however it detects faces from inputted images rather than a live video feed.
@@ -35,7 +37,7 @@ Enter the directory:
 # Enter Directory
 cd engagement-detection
 ```
-To install the relevant data used in the repository, a Makefile is provided:
+To gather the relevant data used in the repository, a Makefile is provided:
 
 ```shell script
 make install
@@ -54,7 +56,6 @@ If you would like to install manually, install system requirements:
 # Install System Requirements
 python3 -m pip install -r requirements.txt
 ```
-
 
 Then, use the scripts provided in the `scripts` directory to install the necessary data:
 1. To install the model and caffemodel files for the DNN, use the `getdata.sh` script. 
@@ -76,7 +77,7 @@ You can replace the current locations with those on your computer.
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/amogh7joshi/chemsolve/CodeQL)
 
-Currently, all models have been configured to work with the `fer2013` dataset. Integration with the `ck+` dataset is in progress.
+Currently, all models have been configured to work with the `fer2013` and `ck+` datasets.
 
 **Model Training**: Run the `trainmodel.py` script. You can edit the number of epochs in the argparse argument
 at the top of the file. Alternatively, you can run itt from the command line using the flags as mentioned by the 
@@ -89,12 +90,14 @@ location at the top of the file. From there, you can run `model.evaluate` on the
 you can run `model.predict` on any custom images you want to test, or run any other operations with the model. 
 A confusion matrix is also present, which will display if `plt.show()` is uncommented.
 
-**Live Face Detection**: Run the `facevideo.py` script. You can choose which detector you want to use, as described at the top of the file. 
-If you want to save images, set the `-s` flag to `True`, and they will save to a custom directory `imageruntest` at the top-level. 
-More information is included at the top of the file. An implementation of the emotion detection model into this script
-is currently in progress. 
+**Live Emotion Detection**: Run the `videoclassification.py` script. If you already have a trained model, set it at the top of the 
+script, and it will detect emotions live. For just facial detection, run the `facevideo.py` script. You can choose which detector you
+want to use, as described at the top of the file. If you want to save images, set the `-s` flag to `True`, and they will save to a 
+custom directory `imageruntest` at the top-level. More information is included at the top of the file. 
 
-**Image Face Detection**: Run the `facedetect.py` script. If running from the command line, then read the argument information at the top of the file. 
+**Image Emotion Detection**: Run the `emotionclassification.py` script. Choose the images you want to detect emotions on and place their paths in 
+the `userimages` variable. If running from the command line, then write out the paths to each of the images when running the script. Optionally, if you
+just want facial detection,  run the `facedetect.py` script. If running from the command line, then read the argument information at the top of the file. 
 Otherwise, insert the paths of the images that you want to detect faces from into a list called `user_images` midway through the file. The changed images will save
 to a custom directory called `modded`, but you can change that from the `savedir` variable. For each image inputted, the script will output the same image
 with a bounding box around the faces detected from the image.
@@ -124,8 +127,10 @@ subdirectories in the `data` directory. *Please visit the `data` directory for u
 
 ## License and Contributions
 
+![GitHub](https://img.shields.io/github/license/amogh7joshi/engagement-detection)
+
 The code in this repository is available under the [MIT License](https://github.com/amogh7joshi/fer/blob/master/LICENSE). Although you are welcome to download the 
-repository and work with it, unfortunately no contributions will be accepted. 
+repository and work with it, contributions will not be accepted. However, if you notice an issue with the system, feel free to create an issue for me to take a look at. 
 
 ## References
 [1]: Chollet, F. (2017). Xception: Deep learning with depthwise separable convolutions. 
