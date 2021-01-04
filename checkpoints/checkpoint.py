@@ -6,7 +6,7 @@ import abc
 import numpy as np
 import tensorflow as tf
 
-class Checkpoint(object):
+class Checkpoint(object, metaclass = abc.ABCMeta):
    '''
    Base class for all system checkpoints.
    '''
@@ -27,6 +27,14 @@ class Checkpoint(object):
       if isinstance(source, np.ndarray):
          return tf.convert_to_tensor(source, dtype = tf.float32)
       return source
+
+   @staticmethod
+   @abc.abstractmethod
+   def _compare_tensors(*tensors):
+      """
+      Compare two tensors based on the specifications for the class.
+      """
+      raise NotImplementedError("Subclasses must implement the _compare_tensors method!")
 
    @abc.abstractmethod
    def skip(self):
