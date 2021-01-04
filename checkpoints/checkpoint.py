@@ -18,9 +18,11 @@ class Checkpoint(object, metaclass = abc.ABCMeta):
       '''
       Return a tensor containing all other values gathered from a source.
       '''
-      if not isinstance(source, (list, dict, tf.Tensor, np.ndarray)):
+      if not isinstance(source, (list, dict, tuple, tf.Tensor, np.ndarray)):
          raise ValueError("The comparison source must be a list, dict, tensor, or array of values.")
-      if isinstance(source, list):
+      if isinstance(source, list): #
+         return tf.convert_to_tensor(source, dtype = tf.float32)
+      if isinstance(source, tuple):
          return tf.convert_to_tensor(source, dtype = tf.float32)
       if isinstance(source, dict):
          return tf.convert_to_tensor(list(item for item in source.values()), dtype = tf.float32)
