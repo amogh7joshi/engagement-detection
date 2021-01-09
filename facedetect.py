@@ -2,6 +2,7 @@
 # -*- coding = utf-8 -*-
 import os
 import sys
+import json
 import argparse
 
 import cv2
@@ -23,12 +24,17 @@ args = vars(ap.parse_args())
 userimages = ["test_imgs/useless.jpg"]
 
 # Load classifiers and detectors.
-cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml')
-cascade_eye = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml')
+# Load classifiers and detectors.
+with open('info.json') as f:
+   file = json.load(f)
+   cascade_face = cv2.CascadeClassifier(file['Face Cascade'])
+   cascade_eye = cv2.CascadeClassifier(file['Eye Cascade'])
+   dnn_model = file['DNN Model']
+   dnn_weights = file['DNN Weights']
+
 det = mtcnn.MTCNN()
 datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
-net = cv2.dnn.readNetFromCaffe(os.path.join(datadir, "model.prototxt"),
-                               os.path.join(datadir, "res10_300x300_ssd_iter_140000_fp16.caffemodel"))
+net = cv2.dnn.readNetFromCaffe(dnn_model, dnn_weights)
 
 runchoice = "mtcnn"
 detector = runchoice.lower() if runchoice.lower() in ["mtcnn", "dnn", "cascade", "fer"] else args["detector"]

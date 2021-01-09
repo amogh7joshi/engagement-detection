@@ -39,6 +39,7 @@ model.compile(optimizer = Adam(),
 # Otherwise, if running in an IDE, set the below "runchoice" variable to whatever choice you want.
 # Currently, the DNN is the best detector. It will always default to DNN and the -m argument, but it can be overridden.
 # Make sure "runchoice" is "None" if you are not using it.
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", default = "DNN",
                 help = "The type of model to be used. (MTCNN, DNN, or Cascade).")
@@ -56,7 +57,9 @@ CENTER_POS = (CENTER_X, CENTER_Y)
 list = glob.glob('imageruntest/*')
 for path in list:
    try: os.remove(path)
-   except: print("Error while deleting: ", path)
+   except Exception as e:
+      print("Error while deleting: ", path)
+      raise e
 
 vr = cv2.VideoCapture(0) # (VR -> Video Recognizer)
 time.sleep(1) # Allow camera to initialize.
