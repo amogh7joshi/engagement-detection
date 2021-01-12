@@ -142,6 +142,7 @@ def process_ckplus():
    )
 
    savedir = os.path.join(os.path.dirname(__file__), "dataset", "ck+")
+
    def save_sets(X_train, X_validation, X_test, y_train, y_validation, y_test):
       # Save all image sets to pickle files.
       with open(os.path.join(savedir, "X_train.pickle"), "wb") as file:
@@ -161,14 +162,10 @@ def process_ckplus():
 
    save_sets(X_train, X_validation, X_test, y_train, y_validation, y_test)
 
-# Process data from script.
+# Process data (when called from script).
 if __name__ == "__main__":
    process_fer2013()
    process_ckplus()
-
-
-
-
 
 
 
