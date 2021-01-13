@@ -11,9 +11,11 @@ import numpy as np
 from keras.models import load_model
 
 from data.load_data import get_fer2013_data
+from models.model_factory import load_keras_model
 from util.constant import fer2013_classes
 from util.classifyimgops import apply_offsets
 from util.classifyimgops import preprocess_input
+from util.info import load_info
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--detector", default = "DNN",
@@ -22,22 +24,14 @@ ap.add_argument("-i", "--image", default = None,
                 help = "The images that you want to detect faces from.")
 args = vars(ap.parse_args())
 
-# Get DNN Model
-with open('info.json') as f:
-   file = json.load(f)
-   dnn_model = file['DNN Model']
-   dnn_weights = file['DNN Weights']
-   classifier = file['Face Cascade']
+# Get Cascade Classifier and DNN Model.
+face_detector, net = load_info()
 
-face_detector = cv2.CascadeClassifier(classifier)
-emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-27-0.6631.hdf5')
-emotion_labels = fer2013_classes
-
-# Choose Cascade vs DNN
+# Choose Cascade vs DNN.
 dnn = True
 cascade = False
 
-# Bounding
+# Bounding.
 image_window = 10
 if dnn:
    emotion_offsets = (45, 40)
@@ -46,12 +40,10 @@ elif cascade:
 else:
    raise ValueError("You must choose either dnn or cascade.")
 
-# Load Models
-net = cv2.dnn.readNetFromCaffe(dnn_model, dnn_weights)
-emotion_classifier = load_model(emotion_model_path, compile = False)
+# Load Emotion Detection Model.
+emotion_labels = fer2013_classes
+emotion_classifier = load_keras_model('Model-27-0.6631', compile = False)
 emotion_target_size = emotion_classifier.input_shape[1:3]
-
-# starting lists for calculating modes
 emotion_window = []
 
 # If running from an IDE (not from command line), then enter images here.

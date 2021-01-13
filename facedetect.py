@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from util.baseimgops import resize, grayscale
+from util.info import load_info
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--detector", default = "DNN",
@@ -24,17 +25,8 @@ args = vars(ap.parse_args())
 userimages = ["test_imgs/useless.jpg"]
 
 # Load classifiers and detectors.
-# Load classifiers and detectors.
-with open('info.json') as f:
-   file = json.load(f)
-   cascade_face = cv2.CascadeClassifier(file['Face Cascade'])
-   cascade_eye = cv2.CascadeClassifier(file['Eye Cascade'])
-   dnn_model = file['DNN Model']
-   dnn_weights = file['DNN Weights']
-
+cascade_face, net = load_info()
 det = mtcnn.MTCNN()
-datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
-net = cv2.dnn.readNetFromCaffe(dnn_model, dnn_weights)
 
 runchoice = "mtcnn"
 detector = runchoice.lower() if runchoice.lower() in ["mtcnn", "dnn", "cascade", "fer"] else args["detector"]
@@ -86,26 +78,8 @@ for image in images:
       faces = cascade_face.detectMultiScale(gray_image, scaleFactor=1.2, minNeighbors=5)
       for (x, y, w, h) in faces:
          cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 3)
-         gray_reg = gray_image[y:y + h, x:x + w]
-         color_reg = image[y:y + h, x:x + w]
-         eyes = cascade_eye.detectMultiScale(gray_reg, scaleFactor=1.2)
-         # Uncomment below if you want to try to detect eyes, but it doesn't work quite well.
-         for (x1, y1, w1, h1) in eyes:
-            # cv2.rectangle(color_reg, (x1, y1), (x1 + w1, y1 + h1), (0, 0, 255), 2)
-            pass
 
    cv2.imwrite(os.path.join(savedir or "", f"{file}-detect{extension}"), image)
-
-
-
-
-   
-   
-
-
-
-
-
 
 
 

@@ -9,9 +9,11 @@ import cv2
 from keras.models import load_model
 import numpy as np
 
+from models.model_factory import load_keras_model
 from util.constant import fer2013_classes
 from util.classifyimgops import apply_offsets
 from util.classifyimgops import preprocess_input
+from util.info import load_info
 
 # Window Position Coordinates (MacBook Pro 13-inch)
 CENTER_X = 100
@@ -19,16 +21,7 @@ CENTER_Y = 80
 CENTER_POS = (CENTER_X, CENTER_Y)
 
 # Get DNN Model
-with open('info.json') as f:
-   file = json.load(f)
-   dnn_model = file['DNN Model']
-   dnn_weights = file['DNN Weights']
-   cascade = file['Face Cascade']
-
-face_detector = cv2.CascadeClassifier(cascade)
-emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-49-0.6572.hdf5')
-# emotion_model_path = "./Model-48-0.6333.hdf5"
-emotion_labels = fer2013_classes
+face_detector, net = load_info()
 
 # Choose Model (only one)
 dnn = True
@@ -43,9 +36,10 @@ elif cascade:
 else:
    raise ValueError("You must select one of dnn or cascade.")
 
-# Load Models
-net = cv2.dnn.readNetFromCaffe(dnn_model, dnn_weights)
-emotion_classifier = load_model(emotion_model_path, compile = False)
+# Load Emotion Model.
+emotion_model_path = os.path.join(os.path.dirname(__file__), 'data/savedmodels/Model-49-0.6572.hdf5')
+emotion_labels = fer2013_classes
+emotion_classifier = load_keras_model('Model-27-0.6631', compile = False)
 emotion_target_size = emotion_classifier.input_shape[1:3]
 
 # starting lists for calculating modes

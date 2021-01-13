@@ -23,16 +23,9 @@ from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
 from data.load_data import get_ckplus_data
+from util.info import load_info
 
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_ckplus_data()
-
-datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
-model = model_from_json(open(os.path.join(datadir, "model.json"), "r").read())
-model.load_weights(os.path.join(datadir, "weights.h5"))
-
-model.compile(optimizer = Adam(),
-              loss = categorical_crossentropy,
-              metrics = ['accuracy'])
 
 # A program that detects faces from a continuous video feed.
 # If running the program from the command line, you can choose the detector using the -m flag.
@@ -65,18 +58,8 @@ vr = cv2.VideoCapture(0) # (VR -> Video Recognizer)
 time.sleep(1) # Allow camera to initialize.
 
 # Load classifiers and detectors.
-with open('info.json') as f:
-   file = json.load(f)
-   cascade_face = cv2.CascadeClassifier(file['Face Cascade'])
-   cascade_eye = cv2.CascadeClassifier(file['Eye Cascade'])
-   dnn_model = file['DNN Model']
-   dnn_weights = file['DNN Weights']
-
-# cascade_face = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_frontalface_default.xml')
-# cascade_eye = cv2.CascadeClassifier('/Users/amoghjoshi/directory path/lib/python3.8/site-packages/cv2/data/haarcascade_eye.xml')
+cascade_face, net, cascade_eye = load_info(eyes = True)
 det = mtcnn.MTCNN()
-# datadir = os.path.join(os.path.dirname(__file__), "data", "dnnfile")
-net = cv2.dnn.readNetFromCaffe(dnn_model, dnn_weights)
 
 # Bring the video screen to the front (MacOS ONLY).
 if sys.platform == "darwin": os.system("""osascript -e 'tell app "Finder" to set frontmost of process "Python" to be true'""")
