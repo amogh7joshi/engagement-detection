@@ -114,16 +114,16 @@ def _factory_compile(model, compile):
    """Inner method to compile model if requested from primary methods."""
    if compile == 'default':  # Loss is categorical_crossentropy by default.
       model.compile(
-         optimizer=Adam(),
-         loss=categorical_crossentropy,
-         metrics=['accuracy']
+         optimizer = Adam(),
+         loss = categorical_crossentropy,
+         metrics = ['accuracy']
       )
    elif isinstance(compile, tf.keras.optimizers.Optimizer):
       try:
          model.compile(
-            optimizer=compile,
-            loss=categorical_crossentropy,
-            metrics=['accuracy']
+            optimizer = compile,
+            loss = categorical_crossentropy,
+            metrics = ['accuracy']
          )
       except Exception as e:
          raise e
