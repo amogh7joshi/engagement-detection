@@ -10,6 +10,6 @@ show:
 	scripts/editconstant.sh show
 submodule:
 	git submodule update --remote --merge
-	git add engagement-submodule
+	git add engagement_submodule
 	git commit -m "Updated Engagement Submodule to Latest Commit"
 	git push
