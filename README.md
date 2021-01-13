@@ -20,23 +20,14 @@ there on downloading any necessary files and the location of saved files.
 
 ## Installation
 
-You can directly clone this repository from the command line:
+To use the repository, it can be directly cloned from the command line:
 
 ```shell script
 git clone https://github.com/amogh7joshi/engagement-detection.git
 ```
 
-Or, if you have the GitHub CLI installed, you can use:
+### Makefile Installation
 
-```shell script
-gh repo clone amogh7joshi/engagement-detection
-```
-
-Enter the directory:
-```shell script
-# Enter Directory
-cd engagement-detection
-```
 To gather the relevant data used in the repository, a Makefile is provided:
 
 ```shell script
@@ -46,9 +37,11 @@ make install
 Then, 
 1. Download the `fer2013.csv` file from [here](https://www.kaggle.com/deadskull7/fer2013), follow the directions in the `data`
  subdirectory.
-2. Optionally, you can also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
+2. Optionally, also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
 in the `data` subdirectory.
 3. Run the `preprocess.sh` script. It may take a couple of minutes.
+
+### Manual Installation
 
 If you would like to install manually, install system requirements:
 
@@ -61,9 +54,21 @@ Then, use the scripts provided in the `scripts` directory to install the necessa
 1. To install the model and caffemodel files for the DNN, use the `getdata.sh` script. 
 2. Download the `fer2013.csv` file from [here](https://www.kaggle.com/deadskull7/fer2013), follow the directions in the `data`
  subdirectory.
-3. Optionally, you can also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
+3. Optionally, also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
 in the `data` subdirectory.
 4. Run the `preprocess.sh` script. It may take a couple of minutes.
+
+### Dataset Usage
+
+Once the datasets are preprocessed, they can be called through the following functions:
+
+```python
+from data.load_data import get_fer2013_data
+from data.load_data import get_ckplus_data
+
+# Load the training, validation, and testing data (repeat with other datasets).
+X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
+```
 
 For more information, visit the `data` subdirectory.
 
@@ -71,7 +76,14 @@ The other tools in the Makefile are for convenience purposes only when committin
 in addition to the `editconstant.sh` script. Do not use them unless you are commiting to your own repository.
 
 The `info.json` file contains the relevant locations of the cascade classifiers and DNN model files.
-You can replace the current locations with those on your computer. 
+You can replace the current locations with those on your computer, and then load the detectors as follows.
+
+```python
+from util.info import load_info
+
+# Set the `eyes` option to true if you want to load the eye cascade.
+cascade_face, cascade_eyes, net = load_info(eyes = True)
+```
 
 ## Usage
 
@@ -124,6 +136,18 @@ The deep neural network for face detection makes use of a pre-trained model usin
 The directories in this repository are integrated for a seamless transition sequence. All necessary data
 including model architecture, weights, cascade classifiers, and other necessary files will be saved to necessary 
 subdirectories in the `data` directory. *Please visit the `data` directory for usage instructions.*
+
+Following a training sequence, models are saved to the `data/savedmodels` directory. They can then be loaded 
+either through the architecture + weights files, or just from the weight files, as follows:
+
+```python
+from models.model_factory import *
+
+# Load from architecture + weights files.
+model = load_json_model('<insert-model-name>', compile = 'default')
+# Load just from weights file.
+model = load_keras_model('<insert-model-name', compile = False)
+```
 
 ## License and Contributions
 
