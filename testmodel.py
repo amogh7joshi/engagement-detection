@@ -17,16 +17,13 @@ from tensorflow.keras.optimizers import Adam
 
 from data.load_data import get_fer2013_data, get_ckplus_data
 from util.baseimgops import resize, grayscale
+from models.model_factory import *
 
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
 # Choose which model to load, and from what directory (model, savedmodels).
 # Additionally, choose whether loading only from weights or from architecture + weights.
-datadir = os.path.join(os.path.dirname(__file__), "data", "savedmodels")
-modeldir = os.path.join(os.path.dirname(__file__), "data", "model")
-# model = model_from_json(open(os.path.join(datadir, "Model-20-0.5768.json"), "r").read())
-# model.load_weights(os.path.join(datadir, "Model-20-0.5768.hdf5"))
-model = load_model(os.path.join(datadir, "more-interesting-0.627.hdf5"))
+model = load_keras_model('more-interesting-0.627')
 
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
