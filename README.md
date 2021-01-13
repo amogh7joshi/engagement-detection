@@ -146,7 +146,7 @@ from models.model_factory import *
 # Load from architecture + weights files.
 model = load_json_model('<insert-model-name>', compile = 'default')
 # Load just from weights file.
-model = load_keras_model('<insert-model-name', compile = False)
+model = load_keras_model('<insert-model-name>', compile = False)
 ```
 
 ## License and Contributions
