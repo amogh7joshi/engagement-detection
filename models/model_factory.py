@@ -4,7 +4,11 @@ import os
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import model_from_json
 
-def load_json_model(model_name, folder_path = None, weights_format = None):
+import tensorflow as tf
+from tensorflow.keras.optimizers import Adam, SGD, RMSprop
+from tensorflow.keras.losses import categorical_crossentropy
+
+def load_json_model(model_name, folder_path = None, weights_format = None, compile = 'default'):
    """Method to load model from architecture + weights file (json + h5 or hdf5)."""
    if folder_path: # Verify model path exists.
       if folder_path == 'models': # Convenience option, to load from model directory instead of savedmodels.
@@ -51,6 +55,26 @@ def load_json_model(model_name, folder_path = None, weights_format = None):
          raise e
       finally:
          del weights_path
+
+   # Compile model if `compile` is set to a certain setting or an optimizer.
+   if compile:
+      if compile == 'default': # Loss is categorical_crossentropy by default.
+         model.compile(
+            optimizer = Adam(),
+            loss = categorical_crossentropy,
+            metrics = ['accuracy']
+         )
+      if isinstance(compile, tf.keras.optimizers.Optimizer):
+         try:
+            model.compile(
+               optimizer = compile,
+               loss = categorical_crossentropy,
+               metrics = ['accuracy']
+            )
+         except Exception as e:
+            raise e
+      else:
+         raise ValueError("You have provided an invalid value for compilation, should be either 'default' or an optimizer.")
 
    return model
 
