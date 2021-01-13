@@ -10,8 +10,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.metrics import confusion_matrix
-from tensorflow.keras.models import load_model
-from tensorflow.keras.models import model_from_json
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
 
@@ -24,10 +22,6 @@ X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data(
 # Choose which model to load, and from what directory (model, savedmodels).
 # Additionally, choose whether loading only from weights or from architecture + weights.
 model = load_keras_model('more-interesting-0.627')
-
-model.compile(optimizer = Adam(),
-              loss = categorical_crossentropy,
-              metrics = ['accuracy'])
 
 # img = cv2.imread("test_imgs/unnamed.jpg")
 # img = grayscale(resize(img))
