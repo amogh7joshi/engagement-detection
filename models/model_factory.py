@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 import os
+import inspect
+import collections.abc
 
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import model_from_json
+from tensorflow.python.keras.engine.functional import Functional
 
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam, SGD, RMSprop
 from tensorflow.keras.losses import categorical_crossentropy
 
+import models.pastmodels as pastmodels
+
 __all__ = ['load_keras_model', 'load_json_model']
 
-def load_keras_model(model_name, folder_path = None, weights_format = None, compile = 'default'):
+def load_keras_model(model_name, folder_path = None, weights_format = None, compile = 'default') -> Functional:
    """Method to load model only from weights file."""
    if folder_path: # Verify model path exists.
       if folder_path == 'models': # Convenience option, to load from model directory instead of savedmodels.
@@ -55,7 +60,7 @@ def load_keras_model(model_name, folder_path = None, weights_format = None, comp
    # Return model.
    return model
 
-def load_json_model(model_name, folder_path = None, weights_format = None, compile = 'default'):
+def load_json_model(model_name, folder_path = None, weights_format = None, compile = 'default') -> Functional:
    """Method to load model from architecture + weights file (json + h5 or hdf5)."""
    if folder_path: # Verify model path exists.
       if folder_path == 'models': # Convenience option, to load from model directory instead of savedmodels.
@@ -131,6 +136,29 @@ def _factory_compile(model, compile):
       raise ValueError("You have provided an invalid value for compilation, should be either 'default' or an optimizer.")
    return model
 
+def load_past_model(name, input = None, classes = None) -> Functional:
+   """Load one of the past models from the models.pastmodels file."""
+   # Dynamically import the model, and use attributes as necessary.
+   if name not in pastmodels.__all__:
+      raise ValueError(f"Invalid model recieved, should be one of {pastmodels.__all__}.")
+   model = getattr(pastmodels, name)
 
+   # If the model is saved as a method, then load the model with this function's arguments.
+   if isinstance(model, collections.abc.Callable):
+      func_args = inspect.getfullargspec(model)[0]
+      for_function = {}
+      for arg in func_args:
+         try:
+            if eval(arg) is None:
+               raise ValueError(f"You have provided no value for the argument {arg}, "
+                                f"which is required for the model {name}.")
+            else:
+               for_function[arg] = eval(arg)
+         except NameError:
+            pass
+         except Exception as e:
+            raise e
+      model = model(**for_function)
+   return model
 
 

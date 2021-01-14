@@ -10,6 +10,8 @@ from tensorflow.keras.layers import Flatten, Dropout, Dense, Input, ReLU, Softma
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.initializers import RandomNormal
 
+__all__ = ['model1', 'model2', 'model3', 'model4', 'ckplus_model_1']
+
 # This file serves as storage for past (and current) models that I have used.
 # Each had their own different purposes for being removed. See them below for metrics.
 # They can be reimplemented inside of the main model, but may have inferior results.
@@ -104,7 +106,7 @@ model3 = Sequential([
 # 4th Model: the first of the new model design that I am using.
 # ~ 50% accuracy (on 10 epochs)
 # Less time-consuming.
-def model(input, classes, l2_reg = 0.01):
+def build_model_4(input, classes, l2_reg = 0.01):
    reg = l2(l2_reg)
 
    # Model
@@ -168,9 +170,10 @@ def model(input, classes, l2_reg = 0.01):
    model = Model(img_input, output)
    return model
 
-# CK+ Model, ~95%+ accuracy (98+)
-def build_model(classes):
+model4 = build_model_4
 
+# CK+ Model, ~95%+ accuracy (98+)
+def build_ckplus_model_1(classes):
    model = Sequential()
 
    model.add(Conv2D(64, kernel_size = (3, 3), input_shape = (48, 48, 1), activation = 'relu', kernel_initializer = "he_normal"))
@@ -202,3 +205,4 @@ def build_model(classes):
 
    return model
 
+ckplus_model_1 = build_ckplus_model_1
