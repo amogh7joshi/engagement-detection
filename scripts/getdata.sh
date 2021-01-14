@@ -21,13 +21,13 @@ if [ -z "$(ls -A ../data/dnnfile)" ]; then
   echo "Delete existing files from directory? [y/n]"
   read input
   if [ "$input" = "y" ]; then
-    rm ../data/dnnfile/*
+    rm -i ../data/dnnfile/*
   else [ "$input" = "n" ]
     echo "Aborting."
     exit
   fi
 else
-  rm ../data/dnnfile/*
+  rm -i ../data/dnnfile/*
 fi
 
 # Get model for DNN.

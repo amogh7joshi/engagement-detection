@@ -29,11 +29,11 @@ for file in *; do
 done
 
 # Remove files that seem to appear for some reason.
-rm 0
+rm -i 0
 for dest in "${arr[@]}"; do
   # shellcheck disable=SC2216
   if [ -f $dest ]; then
-    rm $dest
+    rm -i $dest
   fi
 done
 
@@ -45,7 +45,7 @@ echo $max
 echo "Would you like to delete the other trained models from this attempt? [y/n]"
 read input
 if [ $input = "y" ]; then
-  rm *
+  rm -i *
   exit
 else
   exit
