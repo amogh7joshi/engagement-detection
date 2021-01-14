@@ -19,27 +19,25 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLRO
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from data.load_data import get_fer2013_data
+from data.dataset_ops import reduce_dataset, shuffle_dataset
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--epochs", default = 10,
                 help = "The number of epochs the model will train for.")
 ap.add_argument("-r", "--reduction", default = False,
-                help = "The size to which the training/validation/test sets should be reduced to. Otherwise False.")
+                help = "The size or percentage to which the training/validation/test sets should be reduced to. Otherwise False.")
 args = vars(ap.parse_args())
 
 datadir = os.path.join(os.path.dirname(__file__), "data")
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
 # Use a smaller dataset of images. Note, this may result in callback issues.
-REDUCE = args['reduction'] # Specify the numerical reduction. Otherwise, this should be false.
-if REDUCE:
-   X_train = X_train[:REDUCE]
-   X_validation = X_validation[:REDUCE]
-   X_test = X_test[:REDUCE]
-   y_train = y_train[:REDUCE]
-   y_validation = y_validation[:REDUCE]
-   y_test = y_test[:REDUCE]
+REDUCE = 0.2 # Specify the numerical reduction. Otherwise, this should be false.
+X_train, X_validation, X_test, y_train, y_validation, y_test = reduce_dataset(
+   X_train, X_validation, X_test, y_train, y_validation, y_test, reduction = REDUCE, shuffle = True
+)
 
+# Model creation method.
 def create_model(input, classes, l2_reg = 0.005):
    reg = l2(l2_reg)
 
@@ -108,7 +106,6 @@ model = create_model((48, 48, 1), 7)
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
               metrics = ['accuracy'])
-# model.summary()
 
 early_stop = EarlyStopping(monitor = 'val_loss', patience = 50)
 reduce_lr = ReduceLROnPlateau(monitor = 'val_loss', factor = 0.1, patience = int(50 / 4), verbose = 1)
@@ -129,7 +126,7 @@ model.fit_generator(
    validation_data = validation_flow
 )
 
-# Save Model Architecture & Determine Best Model
+# Save Model Architecture & Determine Best Model.
 model_json = model.to_json()
 scriptdir = os.path.join(os.path.dirname(__file__), "scripts")
 datadir = os.path.join(os.path.dirname(__file__), "data")
