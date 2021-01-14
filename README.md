@@ -26,29 +26,22 @@ To use the repository, it can be directly cloned from the command line:
 git clone https://github.com/amogh7joshi/engagement-detection.git
 ```
 
-### Makefile Installation
+### Setup
 
-To gather the relevant data used in the repository, a Makefile is provided:
+For setup, a Makefile is provided:
 
 ```shell script
 make install
 ```
 
-Then, 
-1. Download the `fer2013.csv` file from [here](https://www.kaggle.com/deadskull7/fer2013), follow the directions in the `data`
- subdirectory.
-2. Optionally, also download the `ck+` dataset from [here](https://www.kaggle.com/shawon10/ckplus), and follow the directions
-in the `data` subdirectory.
-3. Run the `preprocess.sh` script. It may take a couple of minutes.
-
-### Manual Installation
-
-If you would like to install manually, install system requirements:
+Or, you can manually run:
 
 ```shell script
 # Install System Requirements
 python3 -m pip install -r requirements.txt
 ```
+
+### Data Acquisition
 
 Then, use the scripts provided in the `scripts` directory to install the necessary data:
 1. To install the model and caffemodel files for the DNN, use the `getdata.sh` script. 
