@@ -10,8 +10,21 @@ class Checkpoint(object, metaclass = abc.ABCMeta):
    '''
    Base class for all system checkpoints.
    '''
+   registered_subclasses = ['CheckA', 'CheckB']
+   registry = []
+
    def __init__(self, *args):
       self.tensors = args
+
+   @classmethod
+   def __init_subclass__(cls, **kwargs):
+      """Validate class and update registry to ensure system contains a valid number of checkpoints."""
+      super().__init_subclass__(**kwargs)
+      Checkpoint.registry.append(cls)
+      if cls.__name__ not in Checkpoint.registered_subclasses:
+         raise TypeError(f"Invalid checkpoint class {cls.__name__}, should be either Checkpoint A or B.")
+      if cls.__name__ in Checkpoint.registry:
+         raise ValueError(f"Checkpoint {cls.__name__} already exists in system: {Checkpoint.registry}")
 
    @staticmethod
    def _to_tensor(source):
