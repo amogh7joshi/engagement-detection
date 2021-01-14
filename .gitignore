@@ -9,7 +9,7 @@ __pycache__/
 *.caffemodel
 fer/ignore/model.py
 data/dataset/fer2013.csv
-**test*.py
+**test*.*
 !testmodel.py
 !testckplus.py
 fer/
