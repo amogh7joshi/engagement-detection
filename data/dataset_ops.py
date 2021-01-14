@@ -5,7 +5,7 @@ import os
 import cv2
 import numpy as np
 
-def reduce_dataset(*args, reduction = None, randomize = True):
+def reduce_dataset(*args, reduction = None, shuffle = True):
    """Reduce the size of a dataset, only selecting a certain part of it."""
    data_items = []; data_shape = np.array(args[0]).shape[0]
    # Validate items and convert to numpy arrays.
@@ -24,7 +24,7 @@ def reduce_dataset(*args, reduction = None, randomize = True):
       raise TypeError("You need to provide an integer value for reduction.")
    if reduction > data_items[0].shape[0]:
       raise ValueError(f"You have provided a length longer than that of the dataset: {reduction} > {data_items[0].shape[0]}.")
-   if randomize: # If randomization, then select random items from dataset.
+   if shuffle: # If randomization, then select random items from dataset.
       reduction_list = np.random.choice(data_shape, reduction, replace = False)
       reduced_items = []
       for item in data_items:
@@ -33,11 +33,14 @@ def reduce_dataset(*args, reduction = None, randomize = True):
             current_list.append(item[value])
          current_list = np.array(current_list)
          reduced_items.append(current_list)
-      return reduced_items
    else: # If no randomization, then simply return first n items of dataset.
       reduced_items = []
       for item in data_items:
          reduced_items.append(item[:reduction])
-      return reduced_items
+
+   # Return individual item if only one is provided, otherwise return all.
+   if len(reduced_items) == 1:
+      return reduced_items[0]
+   return reduced_items
 
 
