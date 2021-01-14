@@ -7,30 +7,27 @@ import numpy as np
 import tensorflow as tf
 
 class Checkpoint(object, metaclass = abc.ABCMeta):
-   '''
-   Base class for all system checkpoints.
-   '''
+   # Class registry, used for checkpoint validation.
    registered_subclasses = ['CheckA', 'CheckB']
    registry = []
 
    def __init__(self, *args):
+      """Base class for all system checkpoints."""
       self.tensors = args
 
    @classmethod
    def __init_subclass__(cls, **kwargs):
       """Validate class and update registry to ensure system contains a valid number of checkpoints."""
       super().__init_subclass__(**kwargs)
-      Checkpoint.registry.append(cls)
       if cls.__name__ not in Checkpoint.registered_subclasses:
          raise TypeError(f"Invalid checkpoint class {cls.__name__}, should be either Checkpoint A or B.")
       if cls.__name__ in Checkpoint.registry:
          raise ValueError(f"Checkpoint {cls.__name__} already exists in system: {Checkpoint.registry}")
+      Checkpoint.registry.append(cls)
 
    @staticmethod
    def _to_tensor(source):
-      '''
-      Return a tensor containing all other values gathered from a source.
-      '''
+      """Return a tensor containing all other values gathered from a source."""
       if not isinstance(source, (list, dict, tuple, tf.Tensor, np.ndarray)):
          raise ValueError("The comparison source must be a list, dict, tensor, or array of values.")
       if isinstance(source, list): #
@@ -46,23 +43,17 @@ class Checkpoint(object, metaclass = abc.ABCMeta):
    @staticmethod
    @abc.abstractmethod
    def _compare_tensors(*tensors):
-      """
-      Compare two tensors based on the specifications for the class.
-      """
+      """Compare two tensors based on the specifications for the class."""
       raise NotImplementedError("Subclasses must implement the _compare_tensors method!")
 
    @abc.abstractmethod
    def skip(self):
-      '''
-      Skip certain stages of the system (to be implemented as a return value for the class).
-      '''
+      """Skip certain stages of the system (to be implemented as a return value for the class)."""
       raise NotImplementedError("Subclasses must implement the skip method!")
 
    @abc.abstractmethod
    def gather(self):
-      '''
-      Gather necessary information from a source (to be implemented for use within the class).
-      '''
+      """Gather necessary information from a source (to be implemented for use within the class)."""
       raise NotImplementedError("Subclasses must implement the gather method!")
 
 
