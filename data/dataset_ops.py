@@ -49,6 +49,8 @@ def reduce_dataset(*args, reduction = None, shuffle = True):
          raise ValueError("All items provided must be from the same dataset, and therefore have the same length.")
 
    # Choose reduction and return, based on randomization.
+   if reduction is None: # Default setting, returns 1/10 of the dataset.
+      reduction = data_shape // 10
    if isinstance(reduction, float):
       reduction = int(reduction * data_shape)
    if reduction > data_items[0].shape[0]:
@@ -92,7 +94,7 @@ def shuffle_dataset(*args):
    random_list = np.random.choice(data_shape, data_shape, replace = False)
    shuffled_items = []
    for item in data_items:
-      current_list  = []
+      current_list = []
       for value in random_list:
          current_list.append(item[value])
       current_list = np.array(current_list)
