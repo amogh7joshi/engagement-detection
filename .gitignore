@@ -7,13 +7,11 @@ __pycache__/
 # My Personal Files and Directories
 *.hdf5
 *.caffemodel
-fer/ignore/model.py
 data/dataset/fer2013.csv
 **test*.*
 !testmodel.py
 !testckplus.py
 fer/
-fer
 test_imgs/
 modded/
 lfw/
@@ -28,7 +26,5 @@ pose-detection/
 
 # Temporary
 fec.py
-testckplus.py
 checkpoints/checka.py
-pose-detection/openpose-stuff/*
 custom-xception.py
