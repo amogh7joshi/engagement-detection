@@ -46,7 +46,7 @@ results = service.files().list(pageSize = 1000, fields = "nextPageToken, files(i
 items = results.get('files', [])
 
 # Confirm deletion of files.
-confirm = input("Are you sure that you want to delete files? [yes|no]")
+confirm = input("Are you sure that you want to delete files? [yes|no]\n")
 if not confirm == 'yes':
     print("You do not want to delete files, so exiting.")
     sys.exit(0)
@@ -62,7 +62,7 @@ for item in items:
         model_accuracy = itemname[-4:]
         if not model_accuracy.isdigit(): # If file is from a training session.
             continue
-        if not int(model_accuracy) // 100 >= 61: # If accuracy is less than 61%.
+        if not int(model_accuracy) // 100 >= 62: # If accuracy is less than 62%.
             try:
                 print(f"Deleting file {item['name']}.")
                 service.files().delete(fileId = item['id']).execute()
