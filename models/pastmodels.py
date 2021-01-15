@@ -10,7 +10,7 @@ from tensorflow.keras.layers import Flatten, Dropout, Dense, Input, ReLU, Softma
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.initializers import RandomNormal
 
-__all__ = ['model1', 'model2', 'model3', 'model4', 'ckplus_model_1']
+__all__ = ['model1', 'model2', 'model3', 'model4', 'model5', 'ckplus_model_1']
 
 # This file serves as storage for past (and current) models that I have used.
 # Each had their own different purposes for being removed. See them below for metrics.
@@ -171,6 +171,74 @@ def build_model_4(input, classes, l2_reg = 0.01):
    return model
 
 model4 = build_model_4
+
+# 5th model, probably the best --> high of ~66% accuracy between 25-75 epochs.
+# For some reason, this one stopped doing as well, reduced to ~58-60% accuracy.
+def create_model_5(input, classes, l2_reg = 0.005):
+   reg = l2(l2_reg)
+
+   # Model
+   img_input = Input(input)
+   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, use_bias = False)(img_input)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+
+   res = Conv2D(8, kernel_size = (1, 1), strides = (2, 2), kernel_regularizer = reg, use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   model = Conv2D(8, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = Conv2D(8, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.add([model, res])
+
+   res = Conv2D(16, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   model = Conv2D(16, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = Conv2D(16, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.add([model, res])
+
+   res = Conv2D(32, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   model = Conv2D(32, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = Conv2D(32, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.add([model, res])
+
+   res = Conv2D(64, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   model = Conv2D(64, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = Conv2D(64, kernel_size = (3, 3), padding = 'same', kernel_regularizer = reg, use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.add([model, res])
+
+   model = Conv2D(classes, kernel_size = (3, 3), padding = 'same')(model)
+   model = GlobalAvgPool2D()(model)
+
+   output = Softmax(name = 'predictions')(model)
+
+   model = Model(img_input, output)
+   return model
+
+model5 = create_model_5
 
 # CK+ Model, ~95%+ accuracy (98+)
 def build_ckplus_model_1(classes):
