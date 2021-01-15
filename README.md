@@ -15,6 +15,8 @@ The repository also contains multiple convolutional neural networks for facial e
 They are still in progress, but the general usage is as follows: Train the model from the `trainmodel.py` file,
 and test the model using the `testmodel.py` file. 
 
+For information on the neural network models being used, see the `Neural Network Information` section below.
+
 **NOTE:** Before using anything in this repsitory, please visit the `data` directory and read the instructions
 there on downloading any necessary files and the location of saved files.
 
@@ -40,6 +42,10 @@ Or, you can manually run:
 # Install System Requirements
 python3 -m pip install -r requirements.txt
 ```
+
+In either case, you should delete the `.cloud` directory. Either the Makefile will do it for you or 
+you can manually delete it. It contains operations that I use personally when working with the Google API,
+so unless you are working with any of the same Google APIs, you should delete it.
 
 ### Data Acquisition
 
@@ -110,12 +116,12 @@ with a bounding box around the faces detected from the image.
 ## Neural Network Information
 
 The model architecture I am currently using for the emotion recognition convolutional neural network is roughly developed as a miniature version of the 
-Xception model [\[1\]](https://arxiv.org/abs/1610.02357).
-
+Xception model [\[1\]](https://arxiv.org/abs/1610.02357). It contains three branches at each convolution layer: the first with two convolutions and max pooling,
+the second with only convolution, and a third with one convolution and average pooling. 
 
 Initially, I had chosen to use one similar to the likes of VGG16 and VGG19 
 [\[2\]](http://arxiv.org/abs/1409.1556), but chose against it due to issues which arised during training, and its
-lack of any residual connections.
+lack of any residual connections. These models can be seen in the `models/pastmodels.py` file, specifically models 1-3.
 
 Since the model has a convolutional architecture, fully-connected layers have been replaced with a global average pooling layer. 
 In general, it yields better results. The 2-D convolution layers can also be replaced with separable 2-D convolution layers,
