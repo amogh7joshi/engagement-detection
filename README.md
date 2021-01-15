@@ -23,7 +23,7 @@ there on downloading any necessary files and the location of saved files.
 To use the repository, it can be directly cloned from the command line:
 
 ```shell script
-git clone https://github.com/amogh7joshi/engagement-detection.git
+git clone --recurse-submodules https://github.com/amogh7joshi/engagement-detection.git
 ```
 
 ### Setup
