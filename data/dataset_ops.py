@@ -81,11 +81,7 @@ def shuffle_dataset(*args):
    data_items = []; data_shape = np.array(args[0]).shape[0]
    # Validate items and convert to numpy arrays.
    for item in args:
-      if not isinstance(item, (np.ndarray, list, tuple)):
-         raise TypeError(f"Invalid types provided for arguments, got {type(item)}")
       if isinstance(item, (list, tuple)):
-         data_items.append(np.array(item))
-      else:
          data_items.append(item)
       if np.array(item).shape[0] != data_shape:
          raise ValueError("All items provided must be from the same dataset, and therefore have the same length.")
