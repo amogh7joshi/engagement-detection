@@ -15,7 +15,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.initializers import RandomNormal
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+from tensorflow.keras.callbacks import Callback, EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from data.load_data import get_fer2013_data
@@ -32,10 +32,11 @@ datadir = os.path.join(os.path.dirname(__file__), "data")
 X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data()
 
 # Use a smaller dataset of images. Note, this may result in callback issues.
-REDUCE = 0.2 # Specify the numerical reduction. Otherwise, this should be false.
-X_train, X_validation, X_test, y_train, y_validation, y_test = reduce_dataset(
-   X_train, X_validation, X_test, y_train, y_validation, y_test, reduction = REDUCE, shuffle = True
-)
+REDUCE = False # Specify the numerical reduction. Otherwise, this should be false.
+if REDUCE:
+   X_train, X_validation, X_test, y_train, y_validation, y_test = reduce_dataset(
+      X_train, X_validation, X_test, y_train, y_validation, y_test, reduction = REDUCE, shuffle = True
+   )
 
 # Model creation method.
 def create_model(input, classes, l2_reg = 0.005):
@@ -114,9 +115,31 @@ checkpoint = ModelCheckpoint(save_path, monitor = 'val_loss', verbose = 1, save_
 
 data_gen = ImageDataGenerator(horizontal_flip = True) # Randomly Flip Images
 
+# Custom Dataset Shuffling Callback.
+class DatasetShuffle(Callback):
+   def __init__(self, training_data, validation_data):
+      """A custom callback to shuffle the dataset at the end of each epoch."""
+      super(DatasetShuffle, self).__init__()
+      self.shuffled = 0
+      self.training_data = training_data
+      self.validation_data = validation_data
+
+   def on_train_begin(self, logs = None):
+      self.training_data = shuffle_dataset(*self.training_data)
+      self.validation_data = shuffle_dataset(*self.validation_data)
+      self.shuffled += 1
+
+   def on_epoch_end(self, epoch, logs = None):
+      self.training_data = shuffle_dataset(*self.training_data)
+      self.validation_data = shuffle_dataset(*self.validation_data)
+      self.shuffled += 1
+
+   def on_train_end(self, logs=None):
+      print(f"Dataset was shuffled {self.shuffled} times.")
+
 train_flow = data_gen.flow(X_train, y_train, 32)
 validation_flow = data_gen.flow(X_validation, y_validation)
-callbacks = [checkpoint, early_stop, reduce_lr]
+callbacks = [checkpoint, early_stop, reduce_lr, DatasetShuffle([X_train, y_train], [X_validation, y_validation])]
 model.fit_generator(
    train_flow,
    steps_per_epoch = (len(X_train) / 32),
