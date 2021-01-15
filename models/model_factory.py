@@ -13,7 +13,7 @@ from tensorflow.keras.losses import categorical_crossentropy
 
 import models.pastmodels as pastmodels
 
-__all__ = ['load_keras_model', 'load_json_model']
+__all__ = ['load_keras_model', 'load_json_model', 'load_past_model']
 
 def load_keras_model(model_name, folder_path = None, weights_format = None, compile = 'default') -> Functional:
    """Method to load model only from weights file."""

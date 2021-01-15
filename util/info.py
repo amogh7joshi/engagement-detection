@@ -5,6 +5,8 @@ import json
 
 import cv2
 
+__all__ = ['load_info']
+
 def load_info(path = None, eyes = False):
    """Load cascade classifier and DNN from paths in info.json file."""
    if path:
