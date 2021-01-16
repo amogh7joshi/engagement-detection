@@ -240,6 +240,92 @@ def create_model_5(input, classes, l2_reg = 0.005):
 
 model5 = create_model_5
 
+# Model 6 -> The next iteration of the above (model 5), adding another branch with conv/avg pooling.
+# Decent validation accuracy, topped at around 64 but rested usually at 62.
+def create_model(input, classes, l2_reg = 0.005):
+   reg = l2(l2_reg)
+
+   # Model
+   img_input = Input(input)
+   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(img_input)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+
+   res = Conv2D(8, kernel_size = (1, 1), strides = (2, 2), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   pool = Conv2D(8, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   pool = BatchNormalization()(pool)
+   pool = ReLU()(pool)
+   pool = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(pool)
+
+   model = SeparableConv2D(8, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = SeparableConv2D(8, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.concatenate([model, res, pool])
+
+   res = Conv2D(16, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   pool = Conv2D(16, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   pool = BatchNormalization()(pool)
+   pool = ReLU()(pool)
+   pool = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(pool)
+
+   model = SeparableConv2D(16, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = SeparableConv2D(16, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.concatenate([model, res, pool])
+
+   res = Conv2D(32, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   pool = Conv2D(32, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   pool = BatchNormalization()(pool)
+   pool = ReLU()(pool)
+   pool = AveragePooling2D(pool_size = (1, 1), strides = (2, 2))(pool)
+
+   model = SeparableConv2D(32, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = SeparableConv2D(32, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.concatenate([model, res, pool])
+
+   res = Conv2D(64, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
+   res = BatchNormalization()(res)
+
+   pool = Conv2D(64, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   pool = BatchNormalization()(pool)
+   pool = ReLU()(pool)
+   pool = AveragePooling2D(pool_size = (1, 1), strides = (2, 2))(pool)
+
+   model = SeparableConv2D(64, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = ReLU()(model)
+   model = SeparableConv2D(64, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
+   model = layers.concatenate([model, res, pool])
+
+   model = Conv2D(classes, kernel_size = (3, 3), padding = 'same')(model)
+   model = GlobalAvgPool2D()(model)
+
+   output = Softmax(name = 'predictions')(model)
+
+   model = Model(img_input, output)
+   return model
+
 # CK+ Model, ~95%+ accuracy (98+)
 def build_ckplus_model_1(classes):
    model = Sequential()

@@ -9,8 +9,9 @@ import numpy as np
 
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model, Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, BatchNormalization, GlobalAvgPool2D, SeparableConv2D, AveragePooling2D
-from tensorflow.keras.layers import ReLU, LeakyReLU, Softmax, Input, Dense, Dropout, Flatten, Activation
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, BatchNormalization, GlobalAvgPool2D
+from tensorflow.keras.layers import SeparableConv2D, AveragePooling2D, GlobalAveragePooling2D
+from tensorflow.keras.layers import ReLU, concatenate, Softmax, Input, Dense, Dropout, Flatten, Activation
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.regularizers import l2
@@ -39,89 +40,62 @@ if REDUCE:
    )
 
 # Model creation method.
-def create_model(input, classes, l2_reg = 0.005):
-   reg = l2(l2_reg)
+def create_model(input_shape, classes):
+   input = Input(input_shape)
 
-   # Model
-   img_input = Input(input)
-   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(img_input)
+   branch = SeparableConv2D(64, (3, 3), activation = 'relu')(input)
+   branch = BatchNormalization()(branch)
+   branch = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(branch)
+
+   model = Conv2D(64, (3, 3), activation = 'relu', input_shape = (48, 48, 1), kernel_regularizer = l2(0.01))(input)
    model = BatchNormalization()(model)
-   model = ReLU()(model)
-   model = Conv2D(4, kernel_size = (3, 3), strides = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(64, (3, 3), padding = 'same', activation = 'relu')(model)
    model = BatchNormalization()(model)
-   model = ReLU()(model)
+   model = MaxPooling2D(pool_size = (2, 2), strides = (2, 2))(model)
+   model = Dropout(0.5)(model)
+   model = concatenate([branch, model])
 
-   res = Conv2D(8, kernel_size = (1, 1), strides = (2, 2), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
-   res = BatchNormalization()(res)
+   branch = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(model)
 
-   pool = Conv2D(8, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
-   pool = BatchNormalization()(pool)
-   pool = ReLU()(pool)
-   pool = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(pool)
-
-   model = SeparableConv2D(8, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(128, (3, 3), padding = 'same', activation = 'relu', kernel_regularizer = l2(0.01))(model)
    model = BatchNormalization()(model)
-   model = ReLU()(model)
-   model = SeparableConv2D(8, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(128, (3, 3), padding = 'same', activation = 'relu')(model)
    model = BatchNormalization()(model)
-   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
-   model = layers.concatenate([model, res, pool])
-
-   res = Conv2D(16, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
-   res = BatchNormalization()(res)
-
-   pool = Conv2D(16, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
-   pool = BatchNormalization()(pool)
-   pool = ReLU()(pool)
-   pool = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(pool)
-
-   model = SeparableConv2D(16, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(128, (3, 3), padding = 'same', activation = 'relu')(model)
    model = BatchNormalization()(model)
-   model = ReLU()(model)
-   model = SeparableConv2D(16, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = MaxPooling2D(pool_size = (2, 2))(model)
+   model = Dropout(0.5)(model)
+   model = concatenate([branch, model])
+
+   branch = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(model)
+
+   model = Conv2D(256, (3, 3), padding = 'same', activation = 'relu', kernel_regularizer = l2(0.01))(model)
    model = BatchNormalization()(model)
-   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
-   model = layers.concatenate([model, res, pool])
-
-   res = Conv2D(32, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
-   res = BatchNormalization()(res)
-
-   pool = Conv2D(32, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
-   pool = BatchNormalization()(pool)
-   pool = ReLU()(pool)
-   pool = AveragePooling2D(pool_size = (1, 1), strides = (2, 2))(pool)
-
-   model = SeparableConv2D(32, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(256, (3, 3), padding = 'same', activation = 'relu')(model)
    model = BatchNormalization()(model)
-   model = ReLU()(model)
-   model = SeparableConv2D(32, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(256, (3, 3), padding = 'same', activation = 'relu')(model)
    model = BatchNormalization()(model)
-   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
-   model = layers.concatenate([model, res, pool])
+   model = MaxPooling2D(pool_size = (2, 2))(model)
+   model = Dropout(0.5)(model)
+   model = concatenate([branch, model])
 
-   res = Conv2D(64, kernel_size = (1, 1), strides = (2, 2), padding = 'same', use_bias = False)(model)
-   res = BatchNormalization()(res)
+   branch = AveragePooling2D(pool_size = (2, 2), strides = (2, 2))(model)
 
-   pool = Conv2D(64, kernel_size = (1, 1), kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
-   pool = BatchNormalization()(pool)
-   pool = ReLU()(pool)
-   pool = AveragePooling2D(pool_size = (1, 1), strides = (2, 2))(pool)
-
-   model = SeparableConv2D(64, kernel_size = (3, 1), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(512, (3, 3), padding = 'same', activation = 'relu', kernel_regularizer = l2(0.01))(model)
    model = BatchNormalization()(model)
-   model = ReLU()(model)
-   model = SeparableConv2D(64, kernel_size = (1, 3), padding = 'same', kernel_regularizer = reg, kernel_initializer = 'random_uniform', use_bias = False)(model)
+   model = Conv2D(512, (3, 3), padding = 'same', activation = 'relu')(model)
    model = BatchNormalization()(model)
-   model = MaxPooling2D(pool_size = (3, 3), strides = (2, 2), padding = 'same')(model)
-   model = layers.concatenate([model, res, pool])
+   model = Conv2D(512, (3, 3), padding = 'same', activation = 'relu')(model)
+   model = BatchNormalization()(model)
+   model = MaxPooling2D(pool_size = (2, 2))(model)
+   model = Dropout(0.5)(model)
+   model = concatenate([branch, model])
 
-   model = Conv2D(classes, kernel_size = (3, 3), padding = 'same')(model)
-   model = GlobalAvgPool2D()(model)
+   model = Conv2D(classes, (3, 3), padding = 'same', activation = 'softmax')(model)
+   model = GlobalAveragePooling2D()(model)
 
-   output = Softmax(name = 'predictions')(model)
+   return Model(input, model)
 
-   model = Model(img_input, output)
-   return model
 model = create_model((48, 48, 1), 7)
 model.compile(optimizer = Adam(),
               loss = categorical_crossentropy,
