@@ -117,10 +117,10 @@ with a bounding box around the faces detected from the image.
 
 ![model architectures](examples/images/model3.png)
 
-The model architecture I am currently using for the emotion recognition convolutional neural network uses a very basic inception architecture,
+The model architecture I am currently using (architecture is the model on the upper right) for the emotion recognition convolutional neural network uses a very basic inception architecture,
 with each block containing a triple convolution and max pooling branch and an average pooling branch. 
 
-Previously I had used a model roughly developed as a miniature version of the 
+Previously I had used a model (architecture is on the upper left) roughly developed as a miniature version of the 
 Xception model [\[1\]](https://arxiv.org/abs/1610.02357). It contains three branches at each convolution layer: the first with two convolutions and max pooling,
 the second with only convolution, and a third with one convolution and average pooling. 
 
