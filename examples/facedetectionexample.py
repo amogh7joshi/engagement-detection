@@ -70,7 +70,7 @@ for a in range(6):
    else:
       finalimg = np.hstack([finalimg, images])
 
-cv2.imwrite('allfaces.jpg', finalimg)
+cv2.imwrite('images/allfaces.jpg', finalimg)
 
 cv2.imshow('frame', finalimg)
 cv2.waitKey(0)
