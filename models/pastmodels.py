@@ -10,7 +10,7 @@ from tensorflow.keras.layers import Flatten, Dropout, Dense, Input, ReLU, Softma
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.initializers import RandomNormal
 
-__all__ = ['model1', 'model2', 'model3', 'model4', 'model5', 'ckplus_model_1']
+__all__ = ['model1', 'model2', 'model3', 'model4', 'model5', 'model6', 'ckplus_model_1']
 
 # This file serves as storage for past (and current) models that I have used.
 # Each had their own different purposes for being removed. See them below for metrics.
@@ -242,7 +242,7 @@ model5 = create_model_5
 
 # Model 6 -> The next iteration of the above (model 5), adding another branch with conv/avg pooling.
 # Decent validation accuracy, topped at around 64 but rested usually at 62.
-def create_model(input, classes, l2_reg = 0.005):
+def create_model_6(input, classes, l2_reg = 0.005):
    reg = l2(l2_reg)
 
    # Model
@@ -325,6 +325,8 @@ def create_model(input, classes, l2_reg = 0.005):
 
    model = Model(img_input, output)
    return model
+
+model6 = create_model_6
 
 # CK+ Model, ~95%+ accuracy (98+)
 def build_ckplus_model_1(classes):

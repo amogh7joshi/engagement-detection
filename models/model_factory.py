@@ -115,6 +115,31 @@ def load_json_model(model_name, folder_path = None, weights_format = None, compi
    # Return model.
    return model
 
+def load_past_model(name, input = None, classes = None) -> Functional:
+   """Load one of the past models from the models.pastmodels file."""
+   # Dynamically import the model, and use attributes as necessary.
+   if name not in pastmodels.__all__:
+      raise ValueError(f"Invalid model recieved, should be one of {pastmodels.__all__}.")
+   model = getattr(pastmodels, name)
+
+   # If the model is saved as a method, then load the model with this function's arguments.
+   if isinstance(model, collections.abc.Callable):
+      model_args = inspect.getfullargspec(model)[0]
+      func_args = {}
+      for arg in model_args:
+         try:
+            if eval(arg) is None:
+               raise ValueError(f"You have provided no value for the argument {arg}, "
+                                f"which is required for the model {name}.")
+            else:
+               func_args[arg] = eval(arg)
+         except NameError:
+            pass
+         except Exception as e:
+            raise e
+      model = model(**func_args)
+   return model
+
 def _factory_compile(model, compile):
    """Inner method to compile model if requested from primary methods."""
    if compile == 'default':  # Loss is categorical_crossentropy by default.
@@ -136,29 +161,5 @@ def _factory_compile(model, compile):
       raise ValueError("You have provided an invalid value for compilation, should be either 'default' or an optimizer.")
    return model
 
-def load_past_model(name, input = None, classes = None) -> Functional:
-   """Load one of the past models from the models.pastmodels file."""
-   # Dynamically import the model, and use attributes as necessary.
-   if name not in pastmodels.__all__:
-      raise ValueError(f"Invalid model recieved, should be one of {pastmodels.__all__}.")
-   model = getattr(pastmodels, name)
-
-   # If the model is saved as a method, then load the model with this function's arguments.
-   if isinstance(model, collections.abc.Callable):
-      func_args = inspect.getfullargspec(model)[0]
-      for_function = {}
-      for arg in func_args:
-         try:
-            if eval(arg) is None:
-               raise ValueError(f"You have provided no value for the argument {arg}, "
-                                f"which is required for the model {name}.")
-            else:
-               for_function[arg] = eval(arg)
-         except NameError:
-            pass
-         except Exception as e:
-            raise e
-      model = model(**for_function)
-   return model
 
 
