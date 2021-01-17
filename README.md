@@ -1,6 +1,6 @@
 # Engagement Detection
 
-![Faces](examples/diagrams.png)
+![Faces](examples/images/diagrams.png)
 
 This repository contains the source code for neural networks used in facial detection, emotion recognition,
 and the overarching framework of engagement detection. 
@@ -114,6 +114,8 @@ to a custom directory called `modded`, but you can change that from the `savedir
 with a bounding box around the faces detected from the image.
 
 ## Neural Network Information
+
+![model architectures](examples/images/model3.png)
 
 The model architecture I am currently using for the emotion recognition convolutional neural network uses a very basic inception architecture,
 with each block containing a triple convolution and max pooling branch and an average pooling branch. 
