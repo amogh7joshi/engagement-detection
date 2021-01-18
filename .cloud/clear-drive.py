@@ -51,8 +51,8 @@ if not confirm == 'yes':
     print("You do not want to delete files, so exiting.")
     sys.exit(0)
 else:
-    print("You do want to print files, confirmed.")
-    print("\n----------------------------------\n")
+    print("You do want to delete files, confirmed.")
+    print("\n--------------------------------------\n")
 
 # Delete files that do not meet necessary criteria.
 files_deleted = 0
