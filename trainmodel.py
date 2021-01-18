@@ -2,6 +2,7 @@
 # -*- coding = utf-8 -*-
 import os
 import sys
+import datetime
 import subprocess
 import argparse
 
@@ -16,7 +17,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.initializers import RandomNormal
-from tensorflow.keras.callbacks import Callback, EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+from tensorflow.keras.callbacks import Callback, EarlyStopping, ModelCheckpoint, ReduceLROnPlateau, TensorBoard
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from data.load_data import get_fer2013_data
@@ -105,6 +106,9 @@ early_stop = EarlyStopping(monitor = 'val_loss', patience = 50)
 reduce_lr = ReduceLROnPlateau(monitor = 'val_loss', factor = 0.1, patience = int(50 / 4), verbose = 1)
 save_path = os.path.join(datadir, "model", "Model-{epoch:02d}-{val_accuracy:.4f}.hdf5")
 checkpoint = ModelCheckpoint(save_path, monitor = 'val_loss', verbose = 1, save_best_only = True)
+log_dir = os.path.join(os.path.dirname(__file__), 'logs', f'log-{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}')
+tb_cb = TensorBoard(log_dir = log_dir)
+
 
 data_gen = ImageDataGenerator(horizontal_flip = True) # Randomly Flip Images
 
@@ -132,7 +136,7 @@ class DatasetShuffle(Callback):
 
 train_flow = data_gen.flow(X_train, y_train, 32)
 validation_flow = data_gen.flow(X_validation, y_validation)
-callbacks = [checkpoint, early_stop, reduce_lr, DatasetShuffle([X_train, y_train], [X_validation, y_validation])]
+callbacks = [checkpoint, early_stop, reduce_lr, tb_cb, DatasetShuffle([X_train, y_train], [X_validation, y_validation])]
 model.fit_generator(
    train_flow,
    steps_per_epoch = (len(X_train) / 32),
