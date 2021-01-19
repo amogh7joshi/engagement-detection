@@ -25,6 +25,7 @@ data/model/*
 data/savedmodels/*
 pose-detection/
 .cloud/credentials.json
+logs/
 
 # Temporary
 fec.py
