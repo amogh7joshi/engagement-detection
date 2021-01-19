@@ -1,7 +1,5 @@
 # Engagement Detection
 
-![Faces](examples/images/diagrams.png)
-
 This repository contains the source code for neural networks used in facial detection, emotion recognition,
 and the overarching framework of engagement detection. 
 
@@ -11,13 +9,13 @@ The `facevideo.py` file contains live facial detection from the computer webcam.
 on the top of the file contain more information on usage of the different detectors. The `facedetect.py` also contains 
 facial detection, however it detects faces from inputted images rather than a live video feed.
 
-The repository also contains multiple convolutional neural networks for facial emotion recogition.
+The repository also contains multiple convolutional neural networks for facial emotion recognition.
 They are still in progress, but the general usage is as follows: Train the model from the `trainmodel.py` file,
 and test the model using the `testmodel.py` file. 
 
 For information on the neural network models being used, see the `Neural Network Information` section below.
 
-**NOTE:** Before using anything in this repsitory, please visit the `data` directory and read the instructions
+**NOTE:** Before using anything in this repository, please visit the `data` directory and read the instructions
 there on downloading any necessary files and the location of saved files.
 
 ## Installation
@@ -72,7 +70,7 @@ X_train, X_validation, X_test, y_train, y_validation, y_test = get_fer2013_data(
 For more information, visit the `data` subdirectory.
 
 The other tools in the Makefile are for convenience purposes only when committing to this repository, 
-in addition to the `editconstant.sh` script. Do not use them unless you are commiting to your own repository.
+in addition to the `editconstant.sh` script. Do not use them unless you are committing to your own repository.
 
 The `info.json` file contains the relevant locations of the cascade classifiers and DNN model files.
 You can replace the current locations with those on your computer, and then load the detectors as follows.
@@ -115,7 +113,7 @@ with a bounding box around the faces detected from the image.
 
 ## Neural Network Information
 
-![model architectures](examples/images/model3.png)
+![Model Architectures](examples/images/model3.png)
 
 The model architecture I am currently using (architecture is the model on the upper right) for the emotion recognition convolutional neural network uses a very basic inception architecture,
 with each block containing a triple convolution and max pooling branch and an average pooling branch. 
@@ -125,7 +123,7 @@ Xception model [\[1\]](https://arxiv.org/abs/1610.02357). It contains three bran
 the second with only convolution, and a third with one convolution and average pooling. 
 
 Initially, I had chosen to use one similar to the likes of VGG16 and VGG19 
-[\[2\]](http://arxiv.org/abs/1409.1556), but chose against it due to issues which arised during training, and its
+[\[2\]](http://arxiv.org/abs/1409.1556), but chose against it due to issues which arose during training, and its
 lack of any residual connections. These models can be seen in the `models/pastmodels.py` file, specifically models 1-3.
 
 Since the model has a convolutional architecture, fully-connected layers have been replaced with a global average pooling layer. 
